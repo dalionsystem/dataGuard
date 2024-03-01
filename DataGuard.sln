@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DataGuard", "DataGuard\DataGuard.sqlproj", "{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50D0878D-C512-4C88-AB6C-4F54759807BB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7E1645A1-DBD3-4407-9E42-5DCBD05F1925}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{D5C2FB82-F627-4A49-AB39-13F679EB9BB1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6} = {7E1645A1-DBD3-4407-9E42-5DCBD05F1925}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F663CF2-4A53-41AA-886E-18FB9DFD5F42}
+	EndGlobalSection
+EndGlobal
