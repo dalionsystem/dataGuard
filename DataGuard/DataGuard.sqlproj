@@ -66,5 +66,6 @@
     <Build Include="Security\log.sql" />
     <Build Include="Security\conf.sql" />
     <Build Include="conf\Tables\conf.tDatabase.sql" />
+    <Build Include="Security\mon.sql" />
   </ItemGroup>
 </Project>
