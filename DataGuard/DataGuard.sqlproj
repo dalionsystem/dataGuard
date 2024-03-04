@@ -68,4 +68,7 @@
     <Build Include="conf\Tables\conf.tDatabase.sql" />
     <Build Include="Security\mon.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="DataGuard.publish.xml" />
+  </ItemGroup>
 </Project>
