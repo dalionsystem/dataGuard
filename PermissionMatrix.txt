@@ -1,0 +1,15 @@
+
+ObjectType				Table	View	Procedure	InlineFunction	ScalarFunction	Schema		VirtualPermission	
+===================================================================================================
+Alter					x		x		x			x				x				x			Owner
+Control					x		x		x			x				x				x			Owner
+Execute									x							x				x			Execute
+References				x		x					x				x				x			
+Take ownership			x		x		x			x				x				x			
+View definition			x		x		x			x				x				x			ViewDefinition
+Delete					x		x					x								x			Write
+Insert					x		x					x								x			Write
+Select					x		x					x								x			Read
+Update					x		x					x								x			Write
+View change tracking	x		x													x			Owner
+Create sequence																		x			

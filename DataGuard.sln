@@ -14,6 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7E1645A1-DBD3-4407-9E42-5DCBD05F1925}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{D5C2FB82-F627-4A49-AB39-13F679EB9BB1}"
+	ProjectSection(SolutionItems) = preProject
+		PermissionMatrix.txt = PermissionMatrix.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

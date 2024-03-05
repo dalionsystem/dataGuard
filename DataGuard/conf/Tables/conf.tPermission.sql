@@ -13,3 +13,20 @@
 	[LastModifiedOn]		 DATETIME2(3)		CONSTRAINT [conf_dfPermission_LastModifiedOn]	DEFAULT (GETDATE())		NOT NULL
 												CONSTRAINT [conf_pkPermission]					PRIMARY KEY CLUSTERED ([PermissionId] ASC)
 )
+
+GO 
+
+ALTER TABLE [conf].[tPermission] ADD CONSTRAINT conf_chkPermission_ObjectType  CHECK ( [ObjectType]  IN ('%',
+																										 'Inlinefunction',
+																										 'ScalarFunction',
+																										 'Procedure',
+																										 'Role',
+																										 'Schema',																										 
+																										 'Table',																										 
+																										 'View')
+																					 )
+																					 --'User',
+																					 --'Login',
+																					 --'Securable',
+GO
+

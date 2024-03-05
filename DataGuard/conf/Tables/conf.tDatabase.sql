@@ -3,10 +3,10 @@
 	[DatabaseId]			 INT				IDENTITY (1, 1)														NOT NULL,
 	[DatabaseName]			 NVARCHAR(256)																			NOT	NULL,
 	[IsActive]				 BIT															DEFAULT(1)				NOT NULL,
-	[CreatedBy]				 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_CreatedBy]		DEFAULT (SYSTEM_USER)	NOT NULL,
-	[CreatedOn]			     DATETIME2(3)		CONSTRAINT [conf_dfDatabase_CreatedOn]		DEFAULT (GETDATE())		NOT NULL,
-	[LastModifiedBy]		 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_LastModifiedBy]	DEFAULT (SYSTEM_USER)	NOT NULL,
-	[LastModifiedOn]		 DATETIME2(3)		CONSTRAINT [conf_dfDatabase_LastModifiedOn]	DEFAULT (GETDATE())		NOT NULL
+	[CreatedBy]				 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_CreatedBy]		DEFAULT (SUSER_SNAME())	NOT NULL,
+	[CreatedOn]			     DATETIME2(3)		CONSTRAINT [conf_dfDatabase_CreatedOn]		DEFAULT (SYSDATETIME())	NOT NULL,
+	[LastModifiedBy]		 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_LastModifiedBy]	DEFAULT (SUSER_SNAME())	NOT NULL,
+	[LastModifiedOn]		 DATETIME2(3)		CONSTRAINT [conf_dfDatabase_LastModifiedOn]	DEFAULT (SYSDATETIME())	NOT NULL
 												CONSTRAINT [conf_pkDatabase]					PRIMARY KEY CLUSTERED ([DatabaseId] ASC)
 );
 
@@ -40,7 +40,7 @@ BEGIN
 	END
 
 	DECLARE @SuserSname nvarchar(128) 
-			,@Datetime DATETIME2(3) = GETDATE()
+			,@Datetime DATETIME2(3) = SYSDATETIME()
 
 	EXECUTE AS CALLER 
 		SET @SuserSname = SUSER_SNAME()
