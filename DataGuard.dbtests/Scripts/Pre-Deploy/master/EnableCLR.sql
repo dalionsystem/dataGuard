@@ -4,5 +4,5 @@
   EXEC master.sys.sp_configure @configname='clr enabled', @configvalue = 1;
   RECONFIGURE;
 
-  USE [$DatabaseName]
+  USE [$(DatabaseName)]
   GO
