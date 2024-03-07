@@ -71,6 +71,7 @@
     <Build Include="conf\Tables\conf.tDatabase.sql" />
     <Build Include="Security\mon.sql" />
     <Build Include="conf\Tables\conf.tPermission.sql" />
+    <Build Include="conf\Tables\conf.tUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />

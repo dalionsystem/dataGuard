@@ -2,8 +2,8 @@
 (
 	[PermissionId]			INT					IDENTITY (1, 1)		NOT NULL,
 	[EnvironmentId]			TINYINT									NOT NULL,
-	[DatabaseId]			int										NOT NULL,
-	[UserName]				NVARCHAR(128)							NOT NULL,
+	[DatabaseId]			INT										NOT NULL,
+	[UserId]				INT										NOT NULL,
 	[ObjectType]			VARCHAR(128)		DEFAULT ('%')		NOT NULL,
 	[SchemaName]			SYSNAME				DEFAULT ('%')		NOT NULL,
 	[ObjectName]			SYSNAME				DEFAULT ('%')		NOT NULL,
