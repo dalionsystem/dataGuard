@@ -6,7 +6,7 @@
 	[CreatedBy]				 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_CreatedBy]		DEFAULT (SUSER_SNAME())	NOT NULL,
 	[CreatedOn]			     DATETIME2(3)		CONSTRAINT [conf_dfDatabase_CreatedOn]		DEFAULT (SYSDATETIME())	NOT NULL,
 	[LastModifiedBy]		 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_LastModifiedBy]	DEFAULT (SUSER_SNAME())	NOT NULL,
-	[LastModifiedOn]		 DATETIME2(3)		CONSTRAINT [conf_dfDatabase_LastModifiedOn]	DEFAULT (SYSDATETIME())	NOT NULL
+	[LastModifiedOn]		 DATETIME2(3)		CONSTRAINT [conf_dfDatabase_LastModifiedOn]	DEFAULT (SYSDATETIME())	NOT NULL,
 												CONSTRAINT [conf_pkDatabase]					PRIMARY KEY CLUSTERED ([DatabaseId] ASC)
 );
 

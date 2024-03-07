@@ -18,6 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{D5C2FB82-F62
 		PermissionMatrix.txt = PermissionMatrix.txt
 	EndProjectSection
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DataGuard.dbtests", "DataGuard.dbtests\DataGuard.dbtests.sqlproj", "{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{D650D96E-5CA0-4324-B078-84901AF5E272}"
+	ProjectSection(SolutionItems) = preProject
+		External\tSQLt.2019.dacpac = External\tSQLt.2019.dacpac
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,12 +37,20 @@ Global
 		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{03BA78EB-EE24-45A2-86F8-35BFEF5BE1A6} = {7E1645A1-DBD3-4407-9E42-5DCBD05F1925}
+		{A5298359-A4B2-47B0-9D0B-7200B32D0B7D} = {7E1645A1-DBD3-4407-9E42-5DCBD05F1925}
+		{D650D96E-5CA0-4324-B078-84901AF5E272} = {7E1645A1-DBD3-4407-9E42-5DCBD05F1925}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F663CF2-4A53-41AA-886E-18FB9DFD5F42}

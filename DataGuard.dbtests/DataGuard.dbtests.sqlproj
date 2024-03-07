@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>DataGuard</Name>
+    <Name>DataGuard.dbtests</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{03ba78eb-ee24-45a2-86f8-35bfef5be1a6}</ProjectGuid>
+    <ProjectGuid>{a5298359-a4b2-47b0-9d0b-7200b32d0b7d}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>DataGuard</RootNamespace>
-    <AssemblyName>DataGuard</AssemblyName>
+    <RootNamespace>DataGuard.dbtests</RootNamespace>
+    <AssemblyName>DataGuard.dbtests</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -22,8 +22,6 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <IncludeSchemaNameInFileName>True</IncludeSchemaNameInFileName>
-    <IsLedgerOn>False</IsLedgerOn>
     <Trustworthy>True</Trustworthy>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -59,34 +57,34 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Security" />
-    <Folder Include="conf" />
-    <Folder Include="conf\Tables" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Pre-Deploy" />
+    <Folder Include="Scripts\Pre-Deploy\master" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Security\log.sql" />
-    <Build Include="Security\conf.sql" />
-    <Build Include="conf\Tables\conf.tDatabase.sql" />
-    <Build Include="Security\mon.sql" />
-    <Build Include="conf\Tables\conf.tPermission.sql" />
+    <SqlCmdVariable Include="DataGuard_db">
+      <DefaultValue>DataGuard</DefaultValue>
+      <Value>$(SqlCmdVar__4)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataGuard\DataGuard.sqlproj">
+      <Name>DataGuard</Name>
+      <Project>{03ba78eb-ee24-45a2-86f8-35bfef5be1a6}</Project>
+      <Private>True</Private>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>DataGuard_db</DatabaseSqlCmdVariable>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="..\External\tSQLt.2019.dacpac">
+      <HintPath>..\External\tSQLt.2019.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
-    <None Include="Scripts\Pre-Deploy\MaintainDbSettings.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\160\SqlSchemas\master.dacpac">
-      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\160\SqlSchemas\master.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
-    </ArtifactReference>
-    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\160\SqlSchemas\msdb.dacpac">
-      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\160\SqlSchemas\msdb.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseVariableLiteralValue>msdb</DatabaseVariableLiteralValue>
-    </ArtifactReference>
+    <None Include="Scripts\Pre-Deploy\master\EnableCLR.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Pre-Deploy\Script.PreDeployment.sql" />
