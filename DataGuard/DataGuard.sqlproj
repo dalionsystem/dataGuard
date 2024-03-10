@@ -64,6 +64,10 @@
     <Folder Include="conf\Tables" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Pre-Deploy" />
+    <Folder Include="def" />
+    <Folder Include="def\Tables" />
+    <Folder Include="Scripts\Post-Deploy" />
+    <Folder Include="Scripts\Post-Deploy\def" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\log.sql" />
@@ -73,10 +77,13 @@
     <Build Include="conf\Tables\conf.tPermission.sql" />
     <Build Include="conf\Tables\conf.tUser.sql" />
     <Build Include="conf\Tables\conf.tLogin.sql" />
+    <Build Include="Security\def.sql" />
+    <Build Include="def\Tables\def.tTypeLogin.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
     <None Include="Scripts\Pre-Deploy\MaintainDbSettings.sql" />
+    <None Include="Scripts\Post-Deploy\def\SetTypeLogin.sql" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\160\SqlSchemas\master.dacpac">
@@ -92,5 +99,8 @@
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Pre-Deploy\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deploy\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>
