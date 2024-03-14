@@ -68,6 +68,8 @@
     <Folder Include="def\Tables" />
     <Folder Include="Scripts\Post-Deploy" />
     <Folder Include="Scripts\Post-Deploy\def" />
+    <Folder Include="mon" />
+    <Folder Include="mon\Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\log.sql" />
@@ -79,6 +81,7 @@
     <Build Include="conf\Tables\conf.tLogin.sql" />
     <Build Include="Security\def.sql" />
     <Build Include="def\Tables\def.tTypeLogin.sql" />
+    <Build Include="mon\Tables\mon.tPermissionState.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
