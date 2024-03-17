@@ -86,6 +86,7 @@
     <Build Include="def\Tables\def.tTypeLogin.sql" />
     <Build Include="mon\Tables\mon.tPermissionState.sql" />
     <Build Include="dbo\Procedures\dbo.pIsSchemaExists.sql" />
+    <Build Include="dbo\Procedures\dbo.pGetListOfPermissions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
