@@ -86,7 +86,8 @@
     <Build Include="def\Tables\def.tTypeLogin.sql" />
     <Build Include="mon\Tables\mon.tPermissionState.sql" />
     <Build Include="dbo\Procedures\dbo.pIsSchemaExists.sql" />
-    <Build Include="dbo\Procedures\dbo.pGetListOfPermissions.sql" />
+    <Build Include="dbo\Procedures\dbo.pGetListOfDatabasePermissions.sql" />
+    <Build Include="dbo\Procedures\dbo.pGetListOfDatabaseUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
@@ -110,5 +111,8 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deploy\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="DataGuard.refactorlog" />
   </ItemGroup>
 </Project>

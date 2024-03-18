@@ -1,12 +1,11 @@
-﻿CREATE PROCEDURE [dbo].[pGetListOfPermissions]
+﻿CREATE PROCEDURE [dbo].[pGetListOfDatabasePermissions]
 	@DatabaseName	sysname,
 	@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
 			,@ErrorMesssage nvarchar(2000) 
---			,@Result BIT = 0
 			,@ExecQuery nvarchar(4000)
-			,@CrLf CHAR(2) = CHAR(13)+CHAR(10)
+			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
 
 	IF @IsDebug = 1 

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="ff8c1d52-8589-401e-aa5d-d5c8b56397fb" ChangeDateTime="03/17/2024 23:55:21">
+    <Property Name="ElementName" Value="[dbo].[pGetListOfPermissions]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[pGetListOfDatabasePermissions]" />
+  </Operation>
+</Operations>
