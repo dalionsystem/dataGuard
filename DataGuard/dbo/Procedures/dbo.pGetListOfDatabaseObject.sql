@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[pGetListOfDatabaseObject]
 	
 	@DatabaseName	sysname,
-	@Type			varchar(30),
-	@Schema			sysname,
+	@Type			varchar(30) ='%',
+	@Schema			sysname = '%',
 	@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
@@ -28,6 +28,29 @@ AS
 	BEGIN
 		SET @ErrorMesssage = CONCAT('The database ',@DatabaseName,' not exists!')
 		;THROW 50001, @ErrorMesssage ,1;
+	END
+
+
+	DECLARE @ObjectTable TABLE 
+	(
+	--	 [DatabaseName] sysname
+		 [Type]			varchar(20)
+		,[Schema]		sysname
+		,[ObjectName]	sysname
+	)
+
+
+
+	IF @Type = 'Table' OR @Type = '%'
+	BEGIN
+		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
+		SELECT 'Table' AS [Type]
+			  ,[Table_SCHEMA] AS [Schema]
+
+		FROM [DataGuard].[INFORMATION_SCHEMA].[TABLES]
+		WHERE [TABLE_TYPE] = 'BASE TABLE'
+			AND ([TABLE_SCHEMA] = @Schema OR @Schema = '%') 
+ 
 	END
 
 
