@@ -41,41 +41,87 @@ AS
 
 
 
-	IF @Type = 'Table' OR @Type = '%'
+	IF @Type = 'Table' --OR @Type = '%'
 	BEGIN
-		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
-		SELECT 'Table' AS [Type]
-			  ,[Table_SCHEMA] AS [Schema]
+		SET @Sql = CONCAT('
+					SELECT @DatabaseName	AS	[DatabaseName] 						  	
+						  ,''Table''			AS [Type]
+						  ,[Table_SCHEMA]	AS [Schema]
+						  ,[TABLE_NAME]		AS [TableName]
+					FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES]
+					WHERE [TABLE_TYPE] = ''BASE TABLE''', @CRLF,
+					IIF(@Schema = '%', NULL, ' AND [TABLE_SCHEMA] = @Schema ')
+					)
 
+	/*	INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
+		SELECT 'Table'			AS [Type]
+			  ,[Table_SCHEMA]	AS [Schema]
+			  ,[TABLE_NAME]		AS [TableName]
 		FROM [DataGuard].[INFORMATION_SCHEMA].[TABLES]
 		WHERE [TABLE_TYPE] = 'BASE TABLE'
 			AND ([TABLE_SCHEMA] = @Schema OR @Schema = '%') 
- 
+	*/
+	END
+
+
+
+	IF @Type = 'View' 
+	BEGIN
+		SET @Sql = CONCAT('
+			SELECT @DatabaseName	AS	[DatabaseName] 						  	
+					,''View''			AS [Type]
+					,[Table_SCHEMA]	AS [Schema]
+					,[TABLE_NAME]		AS [TableName]
+			FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES]
+			WHERE [TABLE_TYPE] = ''View''', @CRLF,
+			IIF(@Schema = '%', NULL, ' AND [TABLE_SCHEMA] = @Schema ')
+			)
+	END
+
+
+	IF @Type = 'Procedure' OR @Type = '%'
+	BEGIN
+		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
+		SELECT 'Procedure'			AS [Type]
+			  ,[SPECIFIC_SCHEMA]	AS [Schema]
+			  ,[SPECIFIC_NAME]		AS [ObjectName]
+		FROM [DataGuard].[INFORMATION_SCHEMA].[ROUTINES]
+		WHERE [ROUTINE_TYPE] = 'PROCEDURE'
+			AND ([SPECIFIC_SCHEMA] = @Schema OR @Schema = '%') 
+	END
+
+
+	IF @Type = 'InlineFunction' OR @Type = '%'
+	BEGIN
+		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
+		SELECT 'InlineFunction'		AS [Type]
+			  ,[SPECIFIC_SCHEMA]	AS [Schema]
+			  ,[SPECIFIC_NAME]		AS [ObjectName]
+		FROM [DataGuard].[INFORMATION_SCHEMA].[ROUTINES]
+		WHERE [ROUTINE_TYPE] = 'FUNCTION'
+			AND DATA_TYPE = 'TABLE'
+			AND ([SPECIFIC_SCHEMA] = @Schema OR @Schema = '%') 
+	END
+
+
+	IF @Type = 'ScalarFunction' OR @Type = '%'
+	BEGIN
+		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
+		SELECT 'ScalarFunction'		AS [Type]
+			  ,[SPECIFIC_SCHEMA]	AS [Schema]
+			  ,[SPECIFIC_NAME]		AS [ObjectName]
+		FROM [DataGuard].[INFORMATION_SCHEMA].[ROUTINES]
+		WHERE [ROUTINE_TYPE] = 'FUNCTION'
+			AND DATA_TYPE != 'TABLE'
+			AND ([SPECIFIC_SCHEMA] = @Schema OR @Schema = '%') 
 	END
 
 
 	--TODO
 
-	/*
-	SET @sql = CONCAT('
-		SELECT ',QUOTENAME(@DatabaseName,''''),' AS DatabaseName 
-				,c.[type]						AS [Type]
-				,c.[name]						AS [UserName]
-				,m.[class_desc]					AS [ClassDesc]
-				,m.[permission_name]			AS [PermmisionType]
-				,m.[state_desc]					AS [PermmisionState]
-				,COALESCE(sm.[name], so.[name])	AS [SchemaName]
-				,o.[type_desc]					AS [ObjectType]
-				,m.[state_desc]					AS [PermmisionState]
-				,o.[name]						AS [ObjectName]
-		FROM		', QUOTENAME(@DatabaseName),'.sys.database_principals (nolock) c
-		LEFT JOIN	', QUOTENAME(@DatabaseName),'.sys.database_permissions (nolock) m ON m.[grantee_principal_id] = c.[principal_id]
-		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.all_objects (nolock) o ON m.[major_id] = o.[object_id]
-		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.schemas (nolock) so  ON o.[schema_id] = so.[schema_id]
-		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.schemas (nolock) sm  ON m.[major_id] = sm.[schema_id]'
-	)
-	*/
 	PRINT @sql
 
 
-	EXEC SP_executesql @sql
+
+
+	EXEC SP_executesql @sql , N'@DatabaseName nvarchar(255) ,@Schema SYSNAME' , @DatabaseName = @DatabaseName, @Schema = @Schema
