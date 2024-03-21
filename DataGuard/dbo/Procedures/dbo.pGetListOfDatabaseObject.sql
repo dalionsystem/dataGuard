@@ -31,36 +31,28 @@ AS
 	END
 
 
-	DECLARE @ObjectTable TABLE 
+/*	DECLARE @ObjectTable TABLE 
 	(
-	--	 [DatabaseName] sysname
+		 [DatabaseName] sysname
 		 [Type]			varchar(20)
 		,[Schema]		sysname
 		,[ObjectName]	sysname
 	)
+*/
 
 
-
-	IF @Type = 'Table' --OR @Type = '%'
+	IF @Type = 'Table' 
 	BEGIN
 		SET @Sql = CONCAT('
-					SELECT @DatabaseName	AS	[DatabaseName] 						  	
-						  ,''Table''			AS [Type]
-						  ,[Table_SCHEMA]	AS [Schema]
-						  ,[TABLE_NAME]		AS [TableName]
-					FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES]
-					WHERE [TABLE_TYPE] = ''BASE TABLE''', @CRLF,
-					IIF(@Schema = '%', NULL, ' AND [TABLE_SCHEMA] = @Schema ')
-					)
-
-	/*	INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
-		SELECT 'Table'			AS [Type]
-			  ,[Table_SCHEMA]	AS [Schema]
-			  ,[TABLE_NAME]		AS [TableName]
-		FROM [DataGuard].[INFORMATION_SCHEMA].[TABLES]
-		WHERE [TABLE_TYPE] = 'BASE TABLE'
-			AND ([TABLE_SCHEMA] = @Schema OR @Schema = '%') 
-	*/
+				SELECT @DatabaseName	AS [DatabaseName] 						  	
+						,''Table''		AS [Type]
+						,[Table_SCHEMA]	AS [Schema]
+						,[TABLE_NAME]	AS [TableName]
+				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES]  (nolock)
+				WHERE [TABLE_TYPE] = ''BASE TABLE''
+				', 
+				IIF(@Schema = '%', NULL, ' AND [TABLE_SCHEMA] = @Schema ')
+				)
 	END
 
 
@@ -68,60 +60,100 @@ AS
 	IF @Type = 'View' 
 	BEGIN
 		SET @Sql = CONCAT('
-			SELECT @DatabaseName	AS	[DatabaseName] 						  	
-					,''View''			AS [Type]
-					,[Table_SCHEMA]	AS [Schema]
-					,[TABLE_NAME]		AS [TableName]
-			FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES]
-			WHERE [TABLE_TYPE] = ''View''', @CRLF,
-			IIF(@Schema = '%', NULL, ' AND [TABLE_SCHEMA] = @Schema ')
-			)
+				SELECT @DatabaseName	AS [DatabaseName] 						  	
+						,''View''		AS [Type]
+						,[Table_SCHEMA]	AS [Schema]
+						,[TABLE_NAME]		AS [TableName]
+				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES] (nolock)
+				WHERE [TABLE_TYPE] = ''View''
+				', 
+				IIF(@Schema = '%', NULL, ' AND [TABLE_SCHEMA] = @Schema ')
+				)
 	END
 
 
-	IF @Type = 'Procedure' OR @Type = '%'
+	IF @Type = 'Procedure' 
 	BEGIN
-		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
-		SELECT 'Procedure'			AS [Type]
-			  ,[SPECIFIC_SCHEMA]	AS [Schema]
-			  ,[SPECIFIC_NAME]		AS [ObjectName]
-		FROM [DataGuard].[INFORMATION_SCHEMA].[ROUTINES]
-		WHERE [ROUTINE_TYPE] = 'PROCEDURE'
-			AND ([SPECIFIC_SCHEMA] = @Schema OR @Schema = '%') 
+		SET @Sql = CONCAT('
+				SELECT @DatabaseName		AS [DatabaseName] 						  	
+						,''Procedure''		AS [Type]
+						,[SPECIFIC_SCHEMA]	AS [Schema]
+						,[SPECIFIC_NAME]	AS [TableName]
+				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[ROUTINES] (nolock)
+				WHERE [ROUTINE_TYPE] = ''PROCEDURE''
+				', 
+				IIF(@Schema = '%', NULL, ' AND [SPECIFIC_SCHEMA] = @Schema ')
+				)
 	END
 
 
-	IF @Type = 'InlineFunction' OR @Type = '%'
+	IF @Type = 'InlineFunction' 
 	BEGIN
-		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
-		SELECT 'InlineFunction'		AS [Type]
-			  ,[SPECIFIC_SCHEMA]	AS [Schema]
-			  ,[SPECIFIC_NAME]		AS [ObjectName]
-		FROM [DataGuard].[INFORMATION_SCHEMA].[ROUTINES]
-		WHERE [ROUTINE_TYPE] = 'FUNCTION'
-			AND DATA_TYPE = 'TABLE'
-			AND ([SPECIFIC_SCHEMA] = @Schema OR @Schema = '%') 
+		SET @Sql = CONCAT('
+				SELECT @DatabaseName	AS	[DatabaseName] 						  	
+						,''InlineFunction''			AS [Type]
+						,[SPECIFIC_SCHEMA]	AS [Schema]
+						,[SPECIFIC_NAME]		AS [TableName]
+				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[ROUTINES] (nolock)
+				WHERE [ROUTINE_TYPE] = ''FUNCTION''
+					AND DATA_TYPE = ''TABLE''
+				', 
+				IIF(@Schema = '%', NULL, ' AND [SPECIFIC_SCHEMA] = @Schema ')
+				)
 	END
 
 
-	IF @Type = 'ScalarFunction' OR @Type = '%'
+	IF @Type = 'ScalarFunction' 
 	BEGIN
-		INSERT INTO @ObjectTable([Type],[Schema],[ObjectName])
-		SELECT 'ScalarFunction'		AS [Type]
-			  ,[SPECIFIC_SCHEMA]	AS [Schema]
-			  ,[SPECIFIC_NAME]		AS [ObjectName]
-		FROM [DataGuard].[INFORMATION_SCHEMA].[ROUTINES]
-		WHERE [ROUTINE_TYPE] = 'FUNCTION'
-			AND DATA_TYPE != 'TABLE'
-			AND ([SPECIFIC_SCHEMA] = @Schema OR @Schema = '%') 
+
+		SET @Sql = CONCAT('
+			SELECT @DatabaseName			AS [DatabaseName] 						  	
+					,''ScalarFunction''		AS [Type]
+					,[SPECIFIC_SCHEMA]		AS [Schema]
+					,[SPECIFIC_NAME]		AS [TableName]
+			FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[ROUTINES] (nolock)
+			WHERE [ROUTINE_TYPE] = ''FUNCTION''
+				AND DATA_TYPE != ''TABLE''
+			', 
+			IIF(@Schema = '%', NULL, ' AND [SPECIFIC_SCHEMA] = @Schema ')
+			) 
 	END
 
 
-	--TODO
+	IF @Type = '%'
+	BEGIN
 
-	PRINT @sql
+		SET @Sql = CONCAT('
+				SELECT @DatabaseName	AS [DatabaseName] 						  	
+						,CASE
+							WHEN [TABLE_TYPE] = ''View'' THEN ''View''
+							WHEN [TABLE_TYPE] = ''BASE TABLE'' THEN ''Table''
+							ELSE [TABLE_TYPE]
+						END AS [Type]
+						,[Table_SCHEMA]	AS [Schema]
+						,[TABLE_NAME]		AS [TableName]
+				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES] (nolock)
+				', 
+				IIF(@Schema = '%', NULL, ' WHERE [TABLE_SCHEMA] = @Schema ')
+				,'
+			UNION ALL
+			SELECT @DatabaseName			AS	[DatabaseName] 						  	
+					,CASE 
+						WHEN [ROUTINE_TYPE] = ''PROCEDURE'' THEN ''Procedure''
+						WHEN [ROUTINE_TYPE] = ''FUNCTION'' AND DATA_TYPE != ''TABLE'' THEN ''ScalarFunction''
+						WHEN [ROUTINE_TYPE] = ''FUNCTION'' AND DATA_TYPE  = ''TABLE'' THEN ''InlineFunction''
+						ELSE [ROUTINE_TYPE] 
+					END						AS [Type]
+					,[SPECIFIC_SCHEMA]		AS [Schema]
+					,[SPECIFIC_NAME]		AS [TableName]
+			FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[ROUTINES] (nolock)
+			', 
+			IIF(@Schema = '%', NULL, ' WHERE [SPECIFIC_SCHEMA] = @Schema ')
+			) 
+	END
 
 
+	IF @IsDebug =1 PRINT @sql
 
 
 	EXEC SP_executesql @sql , N'@DatabaseName nvarchar(255) ,@Schema SYSNAME' , @DatabaseName = @DatabaseName, @Schema = @Schema
