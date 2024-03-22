@@ -89,6 +89,7 @@
     <Build Include="dbo\Procedures\dbo.pGetListOfDatabasePermissions.sql" />
     <Build Include="dbo\Procedures\dbo.pGetListOfDatabaseUsers.sql" />
     <Build Include="dbo\Procedures\dbo.pGetListOfDatabaseObject.sql" />
+    <Build Include="dbo\Procedures\dbo.pIsDatabaseExists.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
