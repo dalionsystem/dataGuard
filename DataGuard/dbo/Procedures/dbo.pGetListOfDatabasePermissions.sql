@@ -27,16 +27,16 @@ AS
 
 
 	SET @sql = CONCAT('
-		SELECT ',QUOTENAME(@DatabaseName,''''),' AS DatabaseName 
-				,c.[type]						AS [Type]
-				,c.[name]						AS [UserName]
-				,m.[class_desc]					AS [ClassDesc]
-				,m.[permission_name]			AS [PermmisionType]
-				,m.[state_desc]					AS [PermmisionState]
-				,COALESCE(sm.[name], so.[name])	AS [SchemaName]
-				,o.[type_desc]					AS [ObjectType]
-				,m.[state_desc]					AS [PermmisionState]
-				,o.[name]						AS [ObjectName]
+		SELECT ',QUOTENAME(@DatabaseName,''''),' AS [DatabaseName] 
+				,c.[type]						 AS [Type]
+				,c.[name]						 AS [UserName]
+				,m.[class_desc]					 AS [ClassDesc]
+				,m.[permission_name]			 AS [PermmisionType]
+				,m.[state_desc]					 AS [PermmisionState]
+				,COALESCE(sm.[name], so.[name])	 AS [SchemaName]
+				,o.[type_desc]					 AS [ObjectType]
+				,m.[state_desc]					 AS [PermmisionState]
+				,o.[name]						 AS [ObjectName]
 		FROM		', QUOTENAME(@DatabaseName),'.sys.database_principals (nolock) c
 		LEFT JOIN	', QUOTENAME(@DatabaseName),'.sys.database_permissions (nolock) m ON m.[grantee_principal_id] = c.[principal_id]
 		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.all_objects (nolock) o ON m.[major_id] = o.[object_id]

@@ -7,7 +7,7 @@
 AS
 	DECLARE @Sql nvarchar(3000)
 			,@ErrorMesssage nvarchar(2000) 
-			,@ExecQuery nvarchar(4000)
+			,@ExecQuery nvarchar(max)
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
 
@@ -63,7 +63,7 @@ AS
 				SELECT @DatabaseName	AS [DatabaseName] 						  	
 						,''View''		AS [Type]
 						,[Table_SCHEMA]	AS [Schema]
-						,[TABLE_NAME]		AS [TableName]
+						,[TABLE_NAME]	AS [TableName]
 				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[TABLES] (nolock)
 				WHERE [TABLE_TYPE] = ''View''
 				', 
@@ -90,10 +90,10 @@ AS
 	IF @Type = 'InlineFunction' 
 	BEGIN
 		SET @Sql = CONCAT('
-				SELECT @DatabaseName	AS	[DatabaseName] 						  	
-						,''InlineFunction''			AS [Type]
+				SELECT @DatabaseName		AS	[DatabaseName] 						  	
+						,''InlineFunction''	AS [Type]
 						,[SPECIFIC_SCHEMA]	AS [Schema]
-						,[SPECIFIC_NAME]		AS [TableName]
+						,[SPECIFIC_NAME]	AS [TableName]
 				FROM ', QUOTENAME(@DatabaseName),'.[INFORMATION_SCHEMA].[ROUTINES] (nolock)
 				WHERE [ROUTINE_TYPE] = ''FUNCTION''
 					AND DATA_TYPE = ''TABLE''
