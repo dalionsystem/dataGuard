@@ -28,14 +28,57 @@ AS
 	   [DatabaseName]	 sysname 
 	  ,[Type]			 varchar(100)
 	  ,[UserName]		 sysname
+	  ,[Role]		     sysname
 	  ,[ClassDesc]		 varchar(100)
 	  ,[PermmisionType]	 varchar(100)
 	  ,[PermmisionState] varchar(100)
 	  ,[SchemaName]		 sysname
-	  ,[ObjectType]		 varchar(100)
-	  ,[PermmisionState] varchar(100)
+	  ,[ObjectType]		varchar(100)
 	  ,[ObjectName]		 varchar(100)
 	)
+
+
+
+	IF @DatabaseName <> '%'
+	BEGIN
+		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermmisionType], [PermmisionState], [SchemaName], [ObjectType], [ObjectName])
+		EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
+	END
+
+	IF @DatabaseName = '%'
+	BEGIN
+		
+		DECLARE @DatabaseNameLoop sysname
+
+		DECLARE databaseNameCursor CURSOR READ_ONLY FOR
+			SELECT DatabaseName 
+			FROM [conf].[tDatabase] (nolock) 
+			WHERE IsPerissionActive = 1 
+				AND DatabaseName IS NOT NULL
+		
+		OPEN databaseNameCursor
+		FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop
+
+		WHILE @@FETCH_STATUS =0 
+		BEGIN
+
+			BEGIN TRY
+				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermmisionType], [PermmisionState], [SchemaName], [ObjectType], [ObjectName])
+				EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
+			END TRY
+			BEGIN CATCH
+			END CATCH
+
+			FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop
+		END
+
+		CLOSE databaseNameCursor 
+		DEALLOCATE databaseNameCursor 
+
+	END 
+
+
+
 
 	--TODO
 
