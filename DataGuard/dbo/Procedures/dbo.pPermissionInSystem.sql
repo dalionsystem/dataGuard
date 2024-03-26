@@ -33,7 +33,7 @@ AS
 	  ,[PermmisionType]	 varchar(100)
 	  ,[PermmisionState] varchar(100)
 	  ,[SchemaName]		 sysname
-	  ,[ObjectType]		varchar(100)
+	  ,[ObjectType]		 varchar(100)
 	  ,[ObjectName]		 varchar(100)
 	)
 
