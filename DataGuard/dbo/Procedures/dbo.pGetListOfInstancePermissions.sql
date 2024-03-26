@@ -16,25 +16,21 @@ AS
 		 
 	END
 
-/*
-	SET @sql = CONCAT('
-		SELECT ',QUOTENAME(@DatabaseName,''''),' AS [DatabaseName] 
-				,c.[type]						 AS [Type]
-				,c.[name]						 AS [UserName]
+
+	SET @sql = '
+		SELECT   c.[type]						 AS [Type]
+				,c.[name]						 AS [UserName]		--RoleName
 				,m.[class_desc]					 AS [ClassDesc]
 				,m.[permission_name]			 AS [PermmisionType]
 				,m.[state_desc]					 AS [PermmisionState]
-				,COALESCE(sm.[name], so.[name])	 AS [SchemaName]
-				,o.[type_desc]					 AS [ObjectType]
-				,o.[name]						 AS [ObjectName]
-		FROM		', QUOTENAME(@DatabaseName),'.sys.database_principals (nolock) c
-		LEFT JOIN	', QUOTENAME(@DatabaseName),'.sys.database_permissions (nolock) m ON m.[grantee_principal_id] = c.[principal_id]
-		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.all_objects (nolock) o ON m.[major_id] = o.[object_id]
-		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.schemas (nolock) so  ON o.[schema_id] = so.[schema_id]
-		LEFT JOIN 	', QUOTENAME(@DatabaseName),'.sys.schemas (nolock) sm  ON m.[major_id] = sm.[schema_id]'
-	)
+		
+		FROM		sys.server_principals (nolock) c
+		INNER JOIN	sys.server_permissions (nolock) m ON m.[grantee_principal_id] = c.[principal_id]
+		'
+
+	
 	PRINT @sql
-*/
+
 
 	EXEC SP_executesql @sql
 
