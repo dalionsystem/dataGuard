@@ -37,7 +37,7 @@ AS
 		JOIN	', QUOTENAME(@DatabaseName),'.sys.database_principals  (nolock) mc ON mc.[principal_id] = m.[member_principal_id]
 		'
 	)
-	PRINT @sql
+	IF @IsDebug = 1 PRINT @sql
 
 
 	EXEC SP_executesql @sql
