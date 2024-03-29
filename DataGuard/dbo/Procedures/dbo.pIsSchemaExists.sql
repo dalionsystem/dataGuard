@@ -13,9 +13,9 @@ AS
 	IF @IsDebug = 1 
 	BEGIN
 		SET @ExecQuery = CONCAT( 'EXEC ', QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', QUOTENAME(OBJECT_NAME(@@PROCID)), @CRLF,
-								@Tab, '@SchemaName = ',		@SchemaName,	@CRLF,
-								@Tab, '@DatabaseName = ', @DatabaseName,	@CRLF,
-								@Tab, '@IsDebug = ', @IsDebug )
+								@Tab, ' @SchemaName = ',		@SchemaName,	@CRLF,
+								@Tab, ',@DatabaseName = ', @DatabaseName,	@CRLF,
+								@Tab, ',@IsDebug = ', @IsDebug )
 
 		PRINT @ExecQuery
 		 

@@ -16,22 +16,16 @@ AS
 	END
 
 
-	SET @sql = '
-		SELECT  ,''SERVER''		 AS [ClassDesc]
+		SELECT  'SERVER'		 AS [ClassDesc]
 				,s.[type]		 AS [Type]
 				,s.[name]		 AS [RoleName]	--UserName	
 				,pc.[name]		 AS [MemberOf]	--Role
 
 		
 		FROM		sys.server_principals (nolock) s
-		INNER JOIN  sys.server_role_members (nolock) rm ON rm.[member_principal_id] = c.[principal_id]
+		INNER JOIN  sys.server_role_members (nolock) rm ON rm.[member_principal_id] = s.[principal_id]
 		INNER JOIN	sys.server_principals   (nolock) pc	ON rm.[role_principal_id]  = pc.[principal_id]
-		'
+		
 
-	
-	IF @IsDebug = 1 PRINT @sql
-
-
-	EXEC SP_executesql @sql
 
 

@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[pGetListOfInstancePermissions]
 	@IsDebug		BIT		= 0
 AS
-	DECLARE @Sql nvarchar(3000)
-			,@ErrorMesssage nvarchar(2000) 
+	DECLARE 
+			 @ErrorMesssage nvarchar(2000) 
 			,@ExecQuery nvarchar(4000)
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
@@ -17,7 +17,6 @@ AS
 	END
 
 
-	SET @sql = '
 		SELECT   c.[type]						 AS [Type]
 				,c.[name]						 AS [UserName]		--RoleName
 				,m.[class_desc]					 AS [ClassDesc]
@@ -26,11 +25,7 @@ AS
 		
 		FROM		sys.server_principals (nolock) c
 		INNER JOIN	sys.server_permissions (nolock) m ON m.[grantee_principal_id] = c.[principal_id]
-		'
-
-	
-	PRINT @sql
+		
 
 
-	EXEC SP_executesql @sql
 

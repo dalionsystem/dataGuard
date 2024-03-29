@@ -14,21 +14,15 @@ AS
 	IF @IsDebug = 1 
 	BEGIN
 		SET @ExecQuery = CONCAT( 'EXEC ', QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', QUOTENAME(OBJECT_NAME(@@PROCID)), @CRLF,
-								@Tab, '@DatabaseName = ', @DatabaseName,	@CRLF,
-								@Tab, '@Type = ', @Type,	@CRLF,
-								@Tab, '@Schema = ', @Schema,	@CRLF,
-								@Tab, '@IsDebug = ', @IsDebug )
+								@Tab, ' @DatabaseName = ', @DatabaseName,	@CRLF,
+								@Tab, ',@Type = ', @Type,	@CRLF,
+								@Tab, ',@Schema = ', @Schema,	@CRLF,
+								@Tab, ',@IsDebug = ', @IsDebug )
 
-		PRINT @ExecQuery
-		 
+		PRINT @ExecQuery		 
 	END
 
-
-	IF DB_ID(@DatabaseName) IS NULL OR HAS_DBACCESS(@DatabaseName) = 0
-	BEGIN
-		SET @ErrorMesssage = CONCAT('The database ',@DatabaseName,' not exists!')
-		;THROW 50001, @ErrorMesssage ,1;
-	END
+	EXEC [dbo].[pThrowErrorIfDatabaseNotExists] @DatabaseName = @DatabaseName , @IsDebug = @IsDebug
 
 
 /*	DECLARE @ObjectTable TABLE 
