@@ -18,8 +18,8 @@ AS
 
 		SELECT  'SERVER'		 AS [ClassDesc]
 				,s.[type]		 AS [Type]
-				,s.[name]		 AS [RoleName]	--UserName	
-				,pc.[name]		 AS [MemberOf]	--Role
+				,s.[name]		 AS [LoginName]	
+				,pc.[name]		 AS [RoleName]
 
 		
 		FROM		sys.server_principals (nolock) s

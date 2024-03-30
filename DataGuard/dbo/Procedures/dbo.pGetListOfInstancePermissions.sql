@@ -17,7 +17,8 @@ AS
 	END
 
 
-		SELECT   c.[type]						 AS [Type]
+		SELECT DISTINCT
+				 c.[type]						 AS [Type]
 				,c.[name]						 AS [UserName]		--RoleName
 				,m.[class_desc]					 AS [ClassDesc]
 				,m.[permission_name]			 AS [PermmisionType]
