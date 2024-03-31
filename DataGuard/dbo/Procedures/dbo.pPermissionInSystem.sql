@@ -53,7 +53,7 @@ AS
 		DECLARE databaseNameCursor CURSOR READ_ONLY FOR
 			SELECT DatabaseName 
 			FROM [conf].[tDatabase] (nolock) 
-			WHERE IsPerissionActive = 1 
+			WHERE IsPermissionActive = 1 
 				AND DatabaseName IS NOT NULL
 		
 		OPEN databaseNameCursor

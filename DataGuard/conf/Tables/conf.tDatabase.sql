@@ -2,7 +2,7 @@
 (
 	[DatabaseId]			 INT				IDENTITY (1, 1)														NOT NULL,
 	[DatabaseName]			 NVARCHAR(256)																			NOT	NULL,
-	[IsPerissionActive]		 BIT															DEFAULT(1)				NOT NULL,
+	[IsPermissionActive]		 BIT															DEFAULT(1)				NOT NULL,
 	[CreatedBy]				 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_CreatedBy]		DEFAULT (SUSER_SNAME())	NOT NULL,
 	[CreatedOn]			     DATETIME2(3)		CONSTRAINT [conf_dfDatabase_CreatedOn]		DEFAULT (SYSDATETIME())	NOT NULL,
 	[LastModifiedBy]		 NVARCHAR (128)		CONSTRAINT [conf_dfDatabase_LastModifiedBy]	DEFAULT (SUSER_SNAME())	NOT NULL,

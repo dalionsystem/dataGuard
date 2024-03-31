@@ -150,4 +150,4 @@ AS
 	IF @IsDebug =1 PRINT @sql
 
 
-	EXEC SP_executesql @sql , N'@DatabaseName nvarchar(255) ,@Schema SYSNAME' , @DatabaseName = @DatabaseName, @Schema = @Schema
+	EXEC sp_executesql @sql , N'@DatabaseName nvarchar(255) ,@Schema SYSNAME' , @DatabaseName = @DatabaseName, @Schema = @Schema

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [conf].[tPermission]
 (
 	[PermissionId]			INT					IDENTITY (1, 1)		NOT NULL,
-	[EnvironmentId]			TINYINT									NOT NULL,
+	[EnvironmentId]			TINYINT									NOT NULL,					--TODO
 	[DatabaseId]			INT										NOT NULL,
 	[UserId]				INT										NOT NULL,
 	[ObjectType]			VARCHAR(128)		DEFAULT ('%')		NOT NULL,
