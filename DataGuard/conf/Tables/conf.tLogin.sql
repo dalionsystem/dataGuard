@@ -10,8 +10,8 @@
 	[LastModifiedBy]		NVARCHAR (128)	CONSTRAINT [conf_dfLogin_LastModifiedBy]	DEFAULT (SUSER_SNAME())	NOT NULL,
 	[LastModifiedOn]		DATETIME2(3)	CONSTRAINT [conf_dfLogin_LastModifiedOn]	DEFAULT (SYSDATETIME())	NOT NULL,
 
-		CONSTRAINT [conf_pkLogin]				PRIMARY KEY CLUSTERED ([LoginId] ASC),
-		CONSTRAINT [conf_fkLogin_ToTypeLogin]	FOREIGN KEY ([TypeLoginId]) REFERENCES [def].[tTypeLogin] ([TypeLoginId]),
+		CONSTRAINT [conf_pkLogin]					PRIMARY KEY CLUSTERED ([LoginId] ASC),
+		CONSTRAINT [conf_fkLogin_ToTypeLogin]		FOREIGN KEY ([TypeLoginId])				REFERENCES [def].[tTypeLogin] ([TypeLoginId]),
 )
 
 GO

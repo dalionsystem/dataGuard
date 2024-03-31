@@ -12,6 +12,8 @@
 	[LastModifiedBy]		NVARCHAR (128)		CONSTRAINT [conf_dfPermission_LastModifiedBy]	DEFAULT (SYSTEM_USER)	NOT NULL,
 	[LastModifiedOn]		DATETIME2(3)		CONSTRAINT [conf_dfPermission_LastModifiedOn]	DEFAULT (GETDATE())		NOT NULL,
 												CONSTRAINT [conf_pkPermission]					PRIMARY KEY CLUSTERED ([PermissionId] ASC),
+												CONSTRAINT [conf_fkPermission_ToDatabase]		FOREIGN KEY ([DatabaseId])	REFERENCES [conf].[tDatabase]	([DatabaseId]),
+  												CONSTRAINT [conf_fkPermission_ToUser]			FOREIGN KEY ([UserId])		REFERENCES [conf].[tUser]		([UserId]),
 )
 
 GO 
