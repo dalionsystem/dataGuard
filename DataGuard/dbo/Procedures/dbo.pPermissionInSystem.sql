@@ -25,14 +25,14 @@ AS
 
 	CREATE TABLE #PermissionInSystem
 	(
-	   [DatabaseName]	 sysname 
+	   [DatabaseName]	 sysname 		NULL
 	  ,[Type]			 varchar(100)
-	  ,[UserName]		 sysname
-	  ,[Role]		     sysname
+	  ,[UserName]		 sysname		NULL
+	  ,[Role]		     sysname		NULL
 	  ,[ClassDesc]		 varchar(100)
-	  ,[PermmisionType]	 varchar(100)
-	  ,[PermmisionState] varchar(100)
-	  ,[SchemaName]		 sysname
+	  ,[PermissionType]	 varchar(100)
+	  ,[PermissionState] varchar(100)
+	  ,[SchemaName]		 sysname		NULL
 	  ,[ObjectType]		 varchar(100)
 	  ,[ObjectName]		 varchar(100)
 	)
@@ -41,7 +41,7 @@ AS
 
 	IF @DatabaseName <> '%'
 	BEGIN
-		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermmisionType], [PermmisionState], [SchemaName], [ObjectType], [ObjectName])
+		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
 		EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 	END
 
@@ -63,7 +63,7 @@ AS
 		BEGIN
 
 			BEGIN TRY
-				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermmisionType], [PermmisionState], [SchemaName], [ObjectType], [ObjectName])
+				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
 				EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 			END TRY
 			BEGIN CATCH

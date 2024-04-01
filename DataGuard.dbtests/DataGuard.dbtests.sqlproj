@@ -60,6 +60,8 @@
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Pre-Deploy" />
     <Folder Include="Scripts\Pre-Deploy\master" />
+    <Folder Include="Scripts\Post-Deploy" />
+    <Folder Include="Scripts\Post-Deploy\conf" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="DataGuard_db">
@@ -90,8 +92,12 @@
   <ItemGroup>
     <None Include="local.publish.xml" />
     <None Include="Scripts\Pre-Deploy\master\EnableCLR.sql" />
+    <None Include="Scripts\Post-Deploy\conf\SetTableDatabase.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Pre-Deploy\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Post-Deploy\Script.PostDeployment.sql" />
   </ItemGroup>
 </Project>
