@@ -64,9 +64,11 @@ AS
 
 			BEGIN TRY
 				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
-				EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
+				EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
 			END TRY
-			BEGIN CATCH
+			BEGIN CATCH	
+				SET @ErrorMesssage  = CONCAT('Error when get data from dbo.pGetListOfDatabasePermissions on DatabaseName ', @DatabaseNameLoop)
+				PRINT @ErrorMesssage 
 			END CATCH
 
 			FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop

@@ -21,7 +21,8 @@ AS
 
 
 	SET @sql = CONCAT('
-		SELECT ',QUOTENAME(@DatabaseName,''''),' AS [DatabaseName] 
+		SELECT DISTINCT
+				',QUOTENAME(@DatabaseName,''''),' AS [DatabaseName] 
 				,c.[type]						 AS [Type]
 				,c.[name]						 AS [UserName]
 				,m.[class_desc]					 AS [ClassDesc]
