@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[pPermissionInSystem]
+﻿CREATE PROCEDURE [dbo].[pObjectInSystem]
 	@DatabaseName	sysname,
 	@IsDebug		BIT		= 0
 AS
@@ -38,7 +38,7 @@ AS
 	)
 
 
-
+/*
 	IF @DatabaseName <> '%'
 	BEGIN
 		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
@@ -48,12 +48,6 @@ AS
 		EXEC [dbo].[pGetListOfDatabaseRoles] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 	END
 
-
-	IF @DatabaseName IS NULL
-	BEGIN
-		INSERT INTO #PermissionInSystem ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
-		EXEC [dbo].[pGetListOfInstancePermissions] @IsDebug= @IsDebug
-	END
 
 
 
@@ -130,3 +124,4 @@ AS
 			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
 		END AS [ObjectType]
 	FROM #PermissionInSystem
+*/
