@@ -20,32 +20,23 @@ AS
 	END
 
 
-	IF OBJECT_ID('tempdb..#PermissionInSystem') IS NOT NULL  DROP TABLE #PermissionInSystem
+	IF OBJECT_ID('tempdb..#ObjectInSystem') IS NOT NULL  DROP TABLE #ObjectInSystem
 
 
-	CREATE TABLE #PermissionInSystem
+	CREATE TABLE #ObjectInSystem
 	(
 	   [DatabaseName]	 sysname 		NULL
 	  ,[Type]			 varchar(100)
-	  ,[UserName]		 sysname		NULL
-	  ,[RoleName]	     sysname		NULL
-	  ,[ClassDesc]		 varchar(100)
-	  ,[PermissionType]	 varchar(100)
-	  ,[PermissionState] varchar(100)
 	  ,[SchemaName]		 sysname		NULL
-	  ,[ObjectType]		 varchar(100)
 	  ,[ObjectName]		 varchar(100)
 	)
 
 
-/*
+
 	IF @DatabaseName <> '%'
 	BEGIN
-		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
-		EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
-
-		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName])
-		EXEC [dbo].[pGetListOfDatabaseRoles] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
+		INSERT INTO #ObjectInSystem ([DatabaseName], [Type], [SchemaName], [ObjectName])
+		EXEC [dbo].[pGetListOfDatabaseObject] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 	END
 
 
@@ -69,23 +60,14 @@ AS
 		BEGIN
 
 			BEGIN TRY
-				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
-				EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
+					INSERT INTO #ObjectInSystem ([DatabaseName], [Type], [SchemaName], [ObjectName])
+				EXEC [dbo].[pGetListOfDatabaseObject] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
 			END TRY
 			BEGIN CATCH	
-				SET @ErrorMesssage  = CONCAT('Error when get data from dbo.pGetListOfDatabasePermissions on DatabaseName ', @DatabaseNameLoop)
+				SET @ErrorMesssage  = CONCAT('Error when get data from dbo.pGetListOfDatabaseObject on DatabaseName ', @DatabaseNameLoop)
 				PRINT @ErrorMesssage 
 			END CATCH
 
-
-			BEGIN TRY
-				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName])
-				EXEC [dbo].[pGetListOfDatabaseRoles] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
-			END TRY
-			BEGIN CATCH	
-				SET @ErrorMesssage  = CONCAT('Error when get data from dbo.pGetListOfDatabaseRoles on DatabaseName ', @DatabaseNameLoop)
-				PRINT @ErrorMesssage 
-			END CATCH
 
 			FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop
 		END
@@ -97,31 +79,5 @@ AS
 
 
 
-
-	SELECT 
-		[DatabaseName]
-		,[Type]
-		,[UserName]
-		,[RoleName]
-		,[ClassDesc]
-		,[PermissionType]
-		,[PermissionState]
-		,[SchemaName]
-		,[ObjectType]												AS [SqlObjectType]
-		,IIF([RoleName] IS NOT NULL, [RoleName], [ObjectName])		AS [ObjectName]
-		,CASE 
-			WHEN [RoleName] IS NOT NULL THEN 'Role'
-			WHEN [ClassDesc] = 'SERVER' THEN 'Instance'
-			WHEN [ClassDesc] = 'DATABASE_PRINCIPAL' THEN 'Database'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'USER_TABLE'						THEN 'Table'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'VIEW'								THEN 'View'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_STORED_PROCEDURE'				THEN 'SqlProcedure'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'EXTENDED_STORED_PROCEDURE'		THEN 'ExtendedProcedure'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'CLR_STORED_PROCEDURE'				THEN 'ClrProcedure'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_SCALAR_FUNCTION'				THEN 'ScalarFunction'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_INLINE_TABLE_VALUED_FUNCTION'	THEN 'InlineFunction'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_TABLE_VALUED_FUNCTION'		THEN 'InlineFunction'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
-		END AS [ObjectType]
-	FROM #PermissionInSystem
-*/
+	SELECT *
+	FROM #ObjectInSystem
