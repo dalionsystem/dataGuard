@@ -53,9 +53,10 @@ AS
 	BEGIN
 		INSERT INTO #PermissionInSystem ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
 		EXEC [dbo].[pGetListOfInstancePermissions] @IsDebug= @IsDebug
+
+		INSERT INTO #PermissionInSystem ( [ClassDesc], [Type], [UserName], [RoleName])
+		EXEC [dbo].[pGetListOfInstanceRoles] @IsDebug= @IsDebug
 	END
-
-
 
 	IF @DatabaseName = '%'
 	BEGIN
@@ -93,12 +94,21 @@ AS
 				PRINT @ErrorMesssage 
 			END CATCH
 
+
+
 			FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop
 		END
 
 		CLOSE databaseNameCursor 
 		DEALLOCATE databaseNameCursor 
 
+
+
+		INSERT INTO #PermissionInSystem ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
+		EXEC [dbo].[pGetListOfInstancePermissions] @IsDebug= @IsDebug
+
+		INSERT INTO #PermissionInSystem ( [ClassDesc], [Type], [UserName], [RoleName])
+		EXEC [dbo].[pGetListOfInstanceRoles] @IsDebug= @IsDebug
 	END 
 
 
@@ -130,3 +140,4 @@ AS
 			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
 		END AS [ObjectType]
 	FROM #PermissionInSystem
+
