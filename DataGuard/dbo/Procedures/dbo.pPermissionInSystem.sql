@@ -109,6 +109,8 @@ AS
 
 		INSERT INTO #PermissionInSystem ( [ClassDesc], [Type], [UserName], [RoleName])
 		EXEC [dbo].[pGetListOfInstanceRoles] @IsDebug= @IsDebug
+
+
 	END 
 
 
