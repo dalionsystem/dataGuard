@@ -15,3 +15,8 @@ PRINT N'Executing master\EnableCLR.sql...';
 GO
 :r .\master\EnableCLR.sql
 GO
+
+PRINT N'Executing tSQLtTest\CreateSchemaTest.sql...';
+GO
+:r .\tSQLtTest\CreateSchemaTest.sql
+GO

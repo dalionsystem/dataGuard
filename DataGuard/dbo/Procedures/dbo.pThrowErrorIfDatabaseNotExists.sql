@@ -21,7 +21,7 @@ AS
 
 	IF DB_ID(@DatabaseName) IS NULL OR HAS_DBACCESS(@DatabaseName) = 0
 	BEGIN
-		SET @ErrorMesssage = CONCAT('The database ',@DatabaseName,' not exists!')
+		SET @ErrorMesssage = CONCAT('The database ',@DatabaseName,' does not exists!')
 		;THROW 50001, @ErrorMesssage ,1;
 	END
 
