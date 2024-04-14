@@ -67,6 +67,7 @@
     <Folder Include="Scripts\Pre-Deploy\tSQLtTest" />
     <Folder Include="Test" />
     <Folder Include="Test\Procedures" />
+    <Folder Include="Scripts\Post-Deploy\tSQLt" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="DataGuard_db">
@@ -98,6 +99,7 @@
     <None Include="local.publish.xml" />
     <None Include="Scripts\Pre-Deploy\master\EnableCLR.sql" />
     <None Include="Scripts\Post-Deploy\conf\SetTableDatabase.sql" />
+    <None Include="Scripts\Post-Deploy\tSQLt\tSQLt.Private_InstallationInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Pre-Deploy\Script.PreDeployment.sql" />

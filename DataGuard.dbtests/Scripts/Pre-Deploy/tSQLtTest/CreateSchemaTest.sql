@@ -1,1 +1,2 @@
-﻿EXEC tSQLt.NewTestClass 'test';
+﻿IF SCHEMA_ID('test') IS NULL
+	EXEC tSQLt.NewTestClass 'test';
