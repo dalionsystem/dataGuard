@@ -20,3 +20,8 @@ PRINT N'Executing tSQLt\tSQLt.Private_InstallationInfo.sql...';
 GO
 :r .\tSQLt\tSQLt.Private_InstallationInfo.sql
 GO
+
+PRINT N'Executing tSQLt\tSQLt.SetExecutionBitOnExtenstionPropertyForSchemaTests.sql...';
+GO
+:r .\tSQLt\tSQLt.SetExecutionBitOnExtenstionPropertyForSchemaTests.sql
+GO

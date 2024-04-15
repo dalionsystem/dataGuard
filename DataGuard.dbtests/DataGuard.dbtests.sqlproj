@@ -63,7 +63,6 @@
     <Folder Include="Scripts\Post-Deploy" />
     <Folder Include="Scripts\Post-Deploy\conf" />
     <Folder Include="Security" />
-    <Folder Include="Tests" />
     <Folder Include="Scripts\Pre-Deploy\tSQLtTest" />
     <Folder Include="Test" />
     <Folder Include="Test\Procedures" />
@@ -100,6 +99,7 @@
     <None Include="Scripts\Pre-Deploy\master\EnableCLR.sql" />
     <None Include="Scripts\Post-Deploy\conf\SetTableDatabase.sql" />
     <None Include="Scripts\Post-Deploy\tSQLt\tSQLt.Private_InstallationInfo.sql" />
+    <None Include="Scripts\Post-Deploy\tSQLt\tSQLt.SetExecutionBitOnExtenstionPropertyForSchemaTests.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Pre-Deploy\Script.PreDeployment.sql" />
@@ -111,5 +111,6 @@
     <Build Include="Security\test.sql" />
     <None Include="Scripts\Pre-Deploy\tSQLtTest\CreateSchemaTest.sql" />
     <Build Include="Test\Procedures\test database TestDataTest not existing.sql" />
+    <Build Include="Test\Procedures\test database DataGuard existing.sql" />
   </ItemGroup>
 </Project>
