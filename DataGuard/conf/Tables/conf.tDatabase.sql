@@ -55,11 +55,17 @@ BEGIN
 	FROM inserted i
 	INNER JOIN [conf].[tDatabase] u ON i.DatabaseId = u.DatabaseId
 	LEFT JOIN deleted d				ON i.DatabaseId = d.DatabaseId
-	WHERE d.DatabaseId IS NULL
-		AND (	u.CreatedBy			<> IIF(d.DatabaseId IS NULL, @SuserSname, u.CreatedBy) 
+	WHERE
+		(	    u.CreatedBy			<> IIF(d.DatabaseId IS NULL, @SuserSname, u.CreatedBy) 
 			OR	u.CreatedOn			<> IIF(d.DatabaseId IS NULL, @Datetime, u.CreatedOn)
-			OR  u.LastModifiedBy	<> @SuserSname
-			OR  u.LastModifiedOn	<> @Datetime
+			OR  u.LastModifiedBy	<> IIF(		i.[DatabaseName]		<> d.[DatabaseName]
+											OR	i.[IsPermissionActive]	<> d.[IsPermissionActive]
+											OR	i.[LastModifiedOn]		<> d.[LastModifiedOn]
+											OR	i.[LastModifiedBy]		<> d.[LastModifiedBy]		, @SuserSname,	u.LastModifiedBy)
+			OR  u.LastModifiedOn	<> IIF(		i.[DatabaseName]		<> d.[DatabaseName]
+											OR	i.[IsPermissionActive]	<> d.[IsPermissionActive]
+											OR	i.[LastModifiedOn]		<> d.[LastModifiedOn]
+											OR	i.[LastModifiedBy]		<> d.[LastModifiedBy] 		, @Datetime,	u.LastModifiedOn)								
 		)
 
 /*
