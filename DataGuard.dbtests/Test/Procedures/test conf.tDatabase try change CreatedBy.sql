@@ -1,16 +1,16 @@
-﻿CREATE PROCEDURE [test].[test conf.tDatabase try change CreatedOn]
+﻿CREATE PROCEDURE [test].[test conf.tDatabase try change CreatedBy]
 AS
 BEGIN
 
     DECLARE  @DatabaseName          SYSNAME =  'TestDB'
 
             ,@DatabaseId            INT
-            ,@CreatedOn             DATETIME2(3)
+            ,@CreatedBy             NVARCHAR(128)
 
 
     SELECT TOP (1)
              @DatabaseId = [DatabaseId]    
-            ,@CreatedOn = [CreatedOn]
+            ,@CreatedBy = [CreatedBy]
     FROM [conf].[tDatabase]
     WHERE [DatabaseName] = @DatabaseName
 
@@ -22,7 +22,7 @@ BEGIN
     	EXEC tSQLt.ExpectException @ExpectedMessagePattern = 'Updating columns CreatedBy, CreatedOn is not allowed!', @ExpectedSeverity = NULL, @ExpectedState = NULL;
   
         UPDATE [DataGuard].[conf].[tDatabase]
-            SET [CreatedOn] = '2000-01-01 00:00:00'
+            SET [CreatedBy] = 'WrongTestUser-ManualChenged'
         WHERE DatabaseId = @DatabaseId
 
     END 

@@ -5,14 +5,12 @@ BEGIN
     DECLARE  @DatabaseName          SYSNAME =  'TestDB'
 
             ,@DatabaseId            INT
-            ,@IsPermissionActive    BIT
             ,@LastModifiedOn        DATETIME2(3)
             ,@NewLastModifiedOn     DATETIME2(3)
 
 
     SELECT TOP (1)
              @DatabaseId = [DatabaseId]    
-            ,@IsPermissionActive = [IsPermissionActive]
         --  ,[LastModifiedBy]
             ,@LastModifiedOn = [LastModifiedOn]
     FROM [conf].[tDatabase]
