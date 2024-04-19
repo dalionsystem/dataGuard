@@ -27,8 +27,9 @@ BEGIN
 
     END 
     ELSE 
+    BEGIN
           DECLARE @ErrorMessage nvarchar(200) = CONCAT('The database record ', @DatabaseName, ' does not Exists in conf.tDatabase table')
           EXEC tSQLt.Fail @ErrorMessage 
-  
+    END
 END;
 GO

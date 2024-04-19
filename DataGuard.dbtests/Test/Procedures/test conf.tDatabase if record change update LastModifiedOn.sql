@@ -5,8 +5,8 @@ BEGIN
     DECLARE  @DatabaseName          SYSNAME =  'TestDB'
 
             ,@DatabaseId            INT
-            ,@LastModifiedOn        DATETIME2(3)
-            ,@NewLastModifiedOn     DATETIME2(3)
+            ,@LastModifiedOn        varchar(30) --DATETIME2(3)
+            ,@NewLastModifiedOn     varchar(30) --DATETIME2(3)
 
 
     SELECT TOP (1)
@@ -28,12 +28,14 @@ BEGIN
         SELECT TOP 1 @NewLastModifiedOn = [LastModifiedOn] FROM [conf].[tDatabase] WHERE [DatabaseId] = @DatabaseId
 
         PRINT CONCAT('@LastModifiedOn=<',@LastModifiedOn,'>, @NewLastModifiedOn=<', @NewLastModifiedOn,'>') 
-         EXEC tSQLt.AssertNotEquals @LastModifiedOn, @NewLastModifiedOn;
+        EXEC tSQLt.AssertNotEquals  @NewLastModifiedOn, @LastModifiedOn;
+
 
     END 
     ELSE 
+    BEGIN
           DECLARE @ErrorMessage nvarchar(200) = CONCAT('The database record ', @DatabaseName, ' does not Exists in conf.tDatabase table')
           EXEC tSQLt.Fail @ErrorMessage 
-  
+    END
 END;
-GO
+GO  
