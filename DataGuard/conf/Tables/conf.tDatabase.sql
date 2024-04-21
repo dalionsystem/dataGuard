@@ -24,12 +24,11 @@ CREATE TRIGGER [conf].[trg_Database_ModyficationMeta]
 	AFTER INSERT, UPDATE 
 AS
 BEGIN 
-	SET NOCOUNT ON;
 	
 	IF (ROWCOUNT_BIG() =0)
 	RETURN;
 
-
+	SET NOCOUNT ON;
 	IF EXISTS (
 		SELECT CreatedBy, CreatedOn FROM deleted
 		EXCEPT 
@@ -70,17 +69,50 @@ BEGIN
 		)
 */
 
+	IF EXISTS (
+		SELECT LastModifiedBy, LastModifiedOn FROM deleted
+		EXCEPT 
+		SELECT LastModifiedBy, LastModifiedOn FROM inserted
+	)
+	AND NOT EXISTS (
+		SELECT DatabaseName, IsPermissionActive FROM deleted
+		EXCEPT 
+		SELECT DatabaseName, IsPermissionActive FROM inserted
+	)
+	BEGIN 
+		UPDATE u 
+			SET LastModifiedBy	= @SuserSname
+		FROM inserted i
+		INNER JOIN [conf].[tDatabase] u ON i.DatabaseId = u.DatabaseId
+		LEFT JOIN deleted d				ON i.DatabaseId = d.DatabaseId
+		WHERE	i.LastModifiedBy	<> @SuserSname
 
+		UPDATE u 
+			SET LastModifiedOn	= d.LastModifiedOn
+		FROM inserted i
+		INNER JOIN [conf].[tDatabase] u ON i.DatabaseId = u.DatabaseId
+		LEFT JOIN deleted d				ON i.DatabaseId = d.DatabaseId
+		WHERE	i.LastModifiedBy	= @SuserSname
+			AND i.LastModifiedOn	<> @Datetime
+	END
 
+	IF EXISTS (
+		SELECT * FROM deleted
+		EXCEPT 
+		SELECT * FROM inserted
+	)
+	BEGIN 
 	--UpdateRecord
 	UPDATE u 
 		SET LastModifiedBy	= @SuserSname
 		   ,LastModifiedOn	= @Datetime
 	FROM inserted i
 	INNER JOIN [conf].[tDatabase] u ON i.DatabaseId = u.DatabaseId
-	WHERE	LastModifiedBy	<> @SuserSname
-		OR  LastModifiedOn	<> @Datetime
-		OR  i.[DatabaseName] <> d.[DatabaseName]
-		OR	i.[IsPermissionActive]	<> d.[IsPermissionActive]
-	
+	LEFT JOIN deleted d				ON i.DatabaseId = d.DatabaseId
+	WHERE	i.LastModifiedBy	<> @SuserSname
+		OR  i.LastModifiedOn	<> @Datetime
+	--	OR  i.[DatabaseName]	<> d.[DatabaseName]
+	--	OR	i.[IsPermissionActive]	<> d.[IsPermissionActive]
+	END 
+
 END 

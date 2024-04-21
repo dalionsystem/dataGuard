@@ -22,7 +22,7 @@ BEGIN
     	EXEC tSQLt.ExpectException @ExpectedMessagePattern = 'Updating columns CreatedBy, CreatedOn is not allowed!', @ExpectedSeverity = NULL, @ExpectedState = NULL;
   
         UPDATE [DataGuard].[conf].[tDatabase]
-            SET [CreatedBy] = 'WrongTestUser-ManualChenged'
+            SET [CreatedBy] = CONCAT('WrongTestUser-ManualChenged', CONVERT(nvarchar(30),GETDATE(), 121))
         WHERE DatabaseId = @DatabaseId
 
     END 
