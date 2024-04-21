@@ -48,14 +48,15 @@ BEGIN
 
 	--CreateRecord
 	UPDATE u 
-		SET CreatedBy		= IIF(d.DatabaseId IS NULL, @SuserSname, u.CreatedBy) 
-		   ,CreatedOn		= IIF(d.DatabaseId IS NULL, @Datetime, u.CreatedOn)
+		SET CreatedBy		= @SuserSname 
+		   ,CreatedOn		= @Datetime
 		   ,LastModifiedBy	= @SuserSname
 		   ,LastModifiedOn	= @Datetime
 	FROM inserted i
 	INNER JOIN [conf].[tDatabase] u ON i.DatabaseId = u.DatabaseId
 	LEFT JOIN deleted d				ON i.DatabaseId = d.DatabaseId
-	WHERE
+	WHERE d.DatabaseId IS NULL
+/*
 		(	    u.CreatedBy			<> IIF(d.DatabaseId IS NULL, @SuserSname, u.CreatedBy) 
 			OR	u.CreatedOn			<> IIF(d.DatabaseId IS NULL, @Datetime, u.CreatedOn)
 			OR  u.LastModifiedBy	<> IIF(		i.[DatabaseName]		<> d.[DatabaseName]
@@ -67,8 +68,10 @@ BEGIN
 											OR	i.[LastModifiedOn]		<> d.[LastModifiedOn]
 											OR	i.[LastModifiedBy]		<> d.[LastModifiedBy] 		, @Datetime,	u.LastModifiedOn)								
 		)
+*/
 
-/*
+
+
 	--UpdateRecord
 	UPDATE u 
 		SET LastModifiedBy	= @SuserSname
@@ -77,6 +80,7 @@ BEGIN
 	INNER JOIN [conf].[tDatabase] u ON i.DatabaseId = u.DatabaseId
 	WHERE	LastModifiedBy	<> @SuserSname
 		OR  LastModifiedOn	<> @Datetime
-*/
+		OR  i.[DatabaseName] <> d.[DatabaseName]
+		OR	i.[IsPermissionActive]	<> d.[IsPermissionActive]
 	
 END 
