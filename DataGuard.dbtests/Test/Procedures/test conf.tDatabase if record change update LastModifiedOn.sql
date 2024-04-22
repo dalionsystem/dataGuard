@@ -5,8 +5,8 @@ BEGIN
     DECLARE  @DatabaseName          SYSNAME =  'TestDB'
 
             ,@DatabaseId            INT
-            ,@LastModifiedOn        varchar(30) --DATETIME2(3)
-            ,@NewLastModifiedOn     varchar(30) --DATETIME2(3)
+            ,@LastModifiedOn        DATETIME2(3)
+            ,@NewLastModifiedOn     DATETIME2(3)
 
 
     SELECT TOP (1)
@@ -27,7 +27,7 @@ BEGIN
 
         SELECT TOP 1 @NewLastModifiedOn = [LastModifiedOn] FROM [conf].[tDatabase] WHERE [DatabaseId] = @DatabaseId
 
-        PRINT CONCAT('@LastModifiedOn=<',@LastModifiedOn,'>, @NewLastModifiedOn=<', @NewLastModifiedOn,'>') 
+         PRINT CONCAT('@LastModifiedOn=<',@LastModifiedOn,'>, @NewLastModifiedOn=<', @NewLastModifiedOn,'>') 
         EXEC tSQLt.AssertNotEquals  @NewLastModifiedOn, @LastModifiedOn;
 
 
