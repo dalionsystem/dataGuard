@@ -20,10 +20,10 @@ AS
 	END
 
 
-	IF OBJECT_ID('tempdb..#PermissionInSystem') IS NOT NULL  DROP TABLE #PermissionInSystem
+	IF OBJECT_ID('tempdb..#PermissionInSystemInternal') IS NOT NULL  DROP TABLE #PermissionInSystemInternal
 
 
-	CREATE TABLE #PermissionInSystem
+	CREATE TABLE #PermissionInSystemInternal
 	(
 	   [DatabaseName]	 sysname 		NULL
 	  ,[Type]			 varchar(100)
@@ -41,20 +41,20 @@ AS
 
 	IF @DatabaseName <> '%'
 	BEGIN
-		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
+		INSERT INTO #PermissionInSystemInternal ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
 		EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 
-		INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName])
+		INSERT INTO #PermissionInSystemInternal ([DatabaseName], [Type], [UserName], [RoleName])
 		EXEC [dbo].[pGetListOfDatabaseRoles] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 	END
 
 
 	IF @DatabaseName IS NULL
 	BEGIN
-		INSERT INTO #PermissionInSystem ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
+		INSERT INTO #PermissionInSystemInternal ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
 		EXEC [dbo].[pGetListOfInstancePermissions] @IsDebug= @IsDebug
 
-		INSERT INTO #PermissionInSystem ( [ClassDesc], [Type], [UserName], [RoleName])
+		INSERT INTO #PermissionInSystemInternal ( [ClassDesc], [Type], [UserName], [RoleName])
 		EXEC [dbo].[pGetListOfInstanceRoles] @IsDebug= @IsDebug
 	END
 
@@ -76,7 +76,7 @@ AS
 		BEGIN
 
 			BEGIN TRY
-				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
+				INSERT INTO #PermissionInSystemInternal ([DatabaseName], [Type], [UserName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [ObjectType], [ObjectName])
 				EXEC [dbo].[pGetListOfDatabasePermissions] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
 			END TRY
 			BEGIN CATCH	
@@ -86,7 +86,7 @@ AS
 
 
 			BEGIN TRY
-				INSERT INTO #PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName])
+				INSERT INTO #PermissionInSystemInternal ([DatabaseName], [Type], [UserName], [RoleName])
 				EXEC [dbo].[pGetListOfDatabaseRoles] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
 			END TRY
 			BEGIN CATCH	
@@ -104,16 +104,18 @@ AS
 
 
 
-		INSERT INTO #PermissionInSystem ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
+		INSERT INTO #PermissionInSystemInternal ([Type], [UserName], [ClassDesc], [PermissionType], [PermissionState])
 		EXEC [dbo].[pGetListOfInstancePermissions] @IsDebug= @IsDebug
 
-		INSERT INTO #PermissionInSystem ( [ClassDesc], [Type], [UserName], [RoleName])
+		INSERT INTO #PermissionInSystemInternal ( [ClassDesc], [Type], [UserName], [RoleName])
 		EXEC [dbo].[pGetListOfInstanceRoles] @IsDebug= @IsDebug
 
 
 	END 
 
 
+	IF OBJECT_ID('tempdb..#PermissionInSystem') IS NOT NULL  
+		INSERT INTO #PermissionInSystem
 
 
 	SELECT 
@@ -141,5 +143,5 @@ AS
 			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_TABLE_VALUED_FUNCTION'		THEN 'InlineFunction'
 			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
 		END AS [ObjectType]
-	FROM #PermissionInSystem
+	FROM #PermissionInSystemInternal
 
