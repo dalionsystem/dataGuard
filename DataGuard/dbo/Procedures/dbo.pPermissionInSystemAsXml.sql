@@ -10,6 +10,8 @@ AS
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
 
+			,@XmlResult XML
+
 	IF @IsDebug = 1 
 	BEGIN
 		SET @ExecQuery = CONCAT( 'EXEC ', QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', QUOTENAME(OBJECT_NAME(@@PROCID)), @CRLF,
@@ -26,7 +28,6 @@ AS
 
 
 	CREATE TABLE #PermissionInSystem
-	--DECLARE @PermissionInSystemXml TABLE 
 	(
 	   [DatabaseName]	 sysname 		NULL
 	  ,[Type]			 varchar(100)
@@ -44,7 +45,8 @@ AS
 	)
 
 
-	--	INSERT INTO @PermissionInSystemXml ([DatabaseName], [Type], [UserName], [RoleName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [SqlObjectType], [ObjectName], [ObjectType])
+	--	INSERT INTO @PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [SqlObjectType], [ObjectName], [ObjectType])
 		EXEC [dbo].[pPermissionInSystem] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 
 		SELECT * FROM #PermissionInSystem
+

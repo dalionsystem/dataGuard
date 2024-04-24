@@ -115,33 +115,62 @@ AS
 
 
 	IF OBJECT_ID('tempdb..#PermissionInSystem') IS NOT NULL  
+	BEGIN
 		INSERT INTO #PermissionInSystem
+		SELECT 
+			[DatabaseName]
+			,[Type]
+			,[UserName]
+			,[RoleName]
+			,[ClassDesc]
+			,[PermissionType]
+			,[PermissionState]
+			,[SchemaName]
+			,[ObjectType]												AS [SqlObjectType]
+			,IIF([RoleName] IS NOT NULL, [RoleName], [ObjectName])		AS [ObjectName]
+			,CASE 
+				WHEN [RoleName] IS NOT NULL THEN 'Role'
+				WHEN [ClassDesc] = 'SERVER' THEN 'Instance'
+				WHEN [ClassDesc] = 'DATABASE_PRINCIPAL' THEN 'Database'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'USER_TABLE'						THEN 'Table'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'VIEW'								THEN 'View'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_STORED_PROCEDURE'				THEN 'SqlProcedure'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'EXTENDED_STORED_PROCEDURE'		THEN 'ExtendedProcedure'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'CLR_STORED_PROCEDURE'				THEN 'ClrProcedure'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_SCALAR_FUNCTION'				THEN 'ScalarFunction'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_INLINE_TABLE_VALUED_FUNCTION'	THEN 'InlineFunction'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_TABLE_VALUED_FUNCTION'		THEN 'InlineFunction'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
+			END AS [ObjectType]
+		FROM #PermissionInSystemInternal
 
-
-	SELECT 
-		[DatabaseName]
-		,[Type]
-		,[UserName]
-		,[RoleName]
-		,[ClassDesc]
-		,[PermissionType]
-		,[PermissionState]
-		,[SchemaName]
-		,[ObjectType]												AS [SqlObjectType]
-		,IIF([RoleName] IS NOT NULL, [RoleName], [ObjectName])		AS [ObjectName]
-		,CASE 
-			WHEN [RoleName] IS NOT NULL THEN 'Role'
-			WHEN [ClassDesc] = 'SERVER' THEN 'Instance'
-			WHEN [ClassDesc] = 'DATABASE_PRINCIPAL' THEN 'Database'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'USER_TABLE'						THEN 'Table'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'VIEW'								THEN 'View'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_STORED_PROCEDURE'				THEN 'SqlProcedure'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'EXTENDED_STORED_PROCEDURE'		THEN 'ExtendedProcedure'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'CLR_STORED_PROCEDURE'				THEN 'ClrProcedure'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_SCALAR_FUNCTION'				THEN 'ScalarFunction'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_INLINE_TABLE_VALUED_FUNCTION'	THEN 'InlineFunction'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_TABLE_VALUED_FUNCTION'		THEN 'InlineFunction'
-			WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
-		END AS [ObjectType]
-	FROM #PermissionInSystemInternal
-
+	END
+	ELSE 
+	BEGIN
+		SELECT 
+			[DatabaseName]
+			,[Type]
+			,[UserName]
+			,[RoleName]
+			,[ClassDesc]
+			,[PermissionType]
+			,[PermissionState]
+			,[SchemaName]
+			,[ObjectType]												AS [SqlObjectType]
+			,IIF([RoleName] IS NOT NULL, [RoleName], [ObjectName])		AS [ObjectName]
+			,CASE 
+				WHEN [RoleName] IS NOT NULL THEN 'Role'
+				WHEN [ClassDesc] = 'SERVER' THEN 'Instance'
+				WHEN [ClassDesc] = 'DATABASE_PRINCIPAL' THEN 'Database'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'USER_TABLE'						THEN 'Table'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'VIEW'								THEN 'View'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_STORED_PROCEDURE'				THEN 'SqlProcedure'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'EXTENDED_STORED_PROCEDURE'		THEN 'ExtendedProcedure'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'CLR_STORED_PROCEDURE'				THEN 'ClrProcedure'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_SCALAR_FUNCTION'				THEN 'ScalarFunction'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_INLINE_TABLE_VALUED_FUNCTION'	THEN 'InlineFunction'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' AND [ObjectType] = 'SQL_TABLE_VALUED_FUNCTION'		THEN 'InlineFunction'
+				WHEN [ClassDesc] = 'OBJECT_OR_COLUMN' THEN [ClassDesc]
+			END AS [ObjectType]
+		FROM #PermissionInSystemInternal
+	END
