@@ -48,5 +48,56 @@ AS
 	--	INSERT INTO @PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [SqlObjectType], [ObjectName], [ObjectType])
 		EXEC [dbo].[pPermissionInSystem] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 
-		SELECT * FROM #PermissionInSystem
+--		SELECT * FROM #PermissionInSystem
 
+		
+		SET @XmlResult = (
+			SELECT un.[UserName] as [@UserName],
+				   un.[LoginName] as [@LoginName]
+				,(	
+					SELECT db.[DatabaseName] AS [Database/@Name],
+						(	
+							SELECT rn.[RoleName] as [Role]
+							FROM (	SELECT DISTINCT r.[RoleName]
+									FROM #PermissionInSystem r
+									WHERE db.[UserName] = r.[UserName]
+										AND (db.[DatabaseName] = r.[DatabaseName] OR (db.[DatabaseName] IS NULL AND r.[DatabaseName] IS NULL))
+										AND r.RoleName IS NOT NULL								
+								 ) rn
+							FOR XML PATH(''), TYPE
+						) AS [Database],
+						(
+							SELECT  ps.ObjectType AS [Object/@ObjectType],
+									ps.SchemaName AS [Object/@SchemaName],
+									ps.ObjectName AS [Object/@ObjectName],
+									ps.PermissionType AS [Object/@PermissionType],
+									ps.PermissionState AS [Object/@PermissionState]
+							FROM (	SELECT DISTINCT p.[PermissionState], p.[ObjectType], p.[PermissionType], p.[SchemaName], p.[ObjectName]
+									FROM #PermissionInSystem p
+									WHERE p.PermissionState IS NULL
+										AND db.[UserName] = p.[UserName]
+										AND (db.[DatabaseName] = p.[DatabaseName] OR (db.[DatabaseName] IS NULL AND p.[DatabaseName] IS NULL)) 
+										AND p.RoleName IS NOT NULL	
+								) ps
+							ORDER BY ps.ObjectType, ps.SchemaName, ps.ObjectName
+							FOR XML PATH(''), TYPE
+								
+						) as [Database]
+					FROM (	
+							SELECT DISTINCT d.[DatabaseName], d.[UserName]
+							FROM #PermissionInSystem d
+							WHERE COALESCE(un.[UserName], un.[LoginName]) = d.[UserName]					
+						) db
+					FOR XML PATH(''), TYPE
+				)
+			FROM (
+					SELECT DISTINCT IIF(u.[DatabaseName] IS NOT NULL, u.[UserName], NULL) AS [UserName],
+									IIF(u.[DatabaseName] IS NULL, u.[UserName], NULL) AS [LoginName]
+					FROM #PermissionInSystem u
+					WHERE u.[UserName] = @UserName OR @UserName = '%'
+				) un
+			FOR XML PATH('Permission'), ROOT('Permissions')
+				
+		)
+
+		SELECT @XmlResult
