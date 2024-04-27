@@ -54,7 +54,7 @@ AS
 		SET @XmlResult = (
 			SELECT un.[UserName] as [@UserName],
 				   un.[LoginName] as [@LoginName],
-				   un.[LoginState] as [@LoginState]
+				   un.[State] as [@State]
 				,(	
 					SELECT db.[DatabaseName] AS [Database/@Name],
 						(	
@@ -92,16 +92,32 @@ AS
 					FOR XML PATH(''), TYPE
 				)
 			FROM (
-					SELECT DISTINCT IIF(u.[DatabaseName] IS NOT NULL, u.[UserName], NULL) AS [UserName],
-									IIF(u.[DatabaseName] IS NULL, u.[UserName], NULL) AS [LoginName],
-									IIF(u.[DatabaseName] IS NULL ,
-										IIF(	u.PermissionType  = 'CONNECT SQL'
-											AND u.PermissionState = 'GRANT'	, 'Enabled', 'Disbled'
-										    ), NULL) AS [LoginState]
+					SELECT DISTINCT NULL			AS [UserName],
+									u.[UserName]	AS [LoginName],
+									CASE WHEN u.PermissionType  = 'CONNECT SQL'
+											AND u.PermissionState = 'GRANT'	THEN 'Enabled'
+										 ELSE 'Disbled'
+									END AS [State]
 					FROM #PermissionInSystem u
 					WHERE u.[UserName] = @UserName OR @UserName = '%'
+						AND u.RoleName IS NULL
+						AND u.[DatabaseName] IS NULL 
+
+					UNION ALL
+						SELECT DISTINCT u.[UserName] AS [UserName],
+										NULL AS [LoginName],
+									CASE WHEN u.PermissionType  = 'CONNECT'
+											AND u.PermissionState = 'GRANT'	THEN 'Enabled'	
+										 ELSE 'Disbled'
+									END AS [State]
+						FROM #PermissionInSystem u
+						WHERE u.[UserName] = @UserName OR @UserName = '%'
+							AND u.RoleName IS NULL
+							AND u.[DatabaseName] IS NOT NULL 
+
+
 				) un
-			FOR XML PATH('Permission'), ROOT('Permissions')
+			FOR XML PATH('User'), ROOT('Permissions')
 				
 		)
 
