@@ -53,7 +53,8 @@ AS
 		
 		SET @XmlResult = (
 			SELECT un.[UserName] as [@UserName],
-				   un.[LoginName] as [@LoginName]
+				   un.[LoginName] as [@LoginName],
+				   un.[LoginState] as [@LoginState]
 				,(	
 					SELECT db.[DatabaseName] AS [Database/@Name],
 						(	
@@ -92,7 +93,11 @@ AS
 				)
 			FROM (
 					SELECT DISTINCT IIF(u.[DatabaseName] IS NOT NULL, u.[UserName], NULL) AS [UserName],
-									IIF(u.[DatabaseName] IS NULL, u.[UserName], NULL) AS [LoginName]
+									IIF(u.[DatabaseName] IS NULL, u.[UserName], NULL) AS [LoginName],
+									IIF(u.[DatabaseName] IS NULL ,
+										IIF(	u.PermissionType  = 'CONNECT SQL'
+											AND u.PermissionState = 'GRANT'	, 'Enabled', 'Disbled'
+										    ), NULL) AS [LoginState]
 					FROM #PermissionInSystem u
 					WHERE u.[UserName] = @UserName OR @UserName = '%'
 				) un
