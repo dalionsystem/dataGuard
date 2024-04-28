@@ -92,30 +92,25 @@ AS
 					FOR XML PATH(''), TYPE
 				)
 			FROM (
-					SELECT DISTINCT NULL			AS [UserName],
-									u.[UserName]	AS [LoginName],
-									CASE WHEN u.PermissionType  = 'CONNECT SQL'
-											AND u.PermissionState = 'GRANT'	THEN 'Enabled'
-										 ELSE 'Disbled'
-									END AS [State]
-					FROM #PermissionInSystem u
-					WHERE u.[UserName] = @UserName OR @UserName = '%'
-						AND u.RoleName IS NULL
-						AND u.[DatabaseName] IS NULL 
-
-					UNION ALL
-						SELECT DISTINCT u.[UserName] AS [UserName],
-										NULL AS [LoginName],
-									CASE WHEN u.PermissionType  = 'CONNECT'
-											AND u.PermissionState = 'GRANT'	THEN 'Enabled'	
-										 ELSE 'Disbled'
-									END AS [State]
+					SELECT u2.[UserName]
+						  ,u2.[LoginName]
+						  ,CASE 
+							 WHEN su.[UserName] IS NOT NULL THEN 'Enabled'
+							 WHEN sl.[UserName] IS NOT NULL THEN 'Enabled'
+							 ELSE 'Disbled'
+						  END AS [State]
+					FROM (
+						SELECT DISTINCT IIF(u.[DatabaseName] IS NOT NULL, u.[UserName], NULL) AS [UserName],
+										IIF(u.[DatabaseName] IS NULL, u.[UserName], NULL) AS [LoginName]
 						FROM #PermissionInSystem u
 						WHERE u.[UserName] = @UserName OR @UserName = '%'
-							AND u.RoleName IS NULL
-							AND u.[DatabaseName] IS NOT NULL 
-
-
+						) u2
+					LEFT JOIN #PermissionInSystem su ON u2.[UserName] = su.[UserName]
+														AND su.PermissionType  = 'CONNECT'
+														AND su.PermissionState = 'GRANT'
+					LEFT JOIN #PermissionInSystem sl ON u2.[LoginName] = sl.[UserName]
+														AND su.PermissionType  = 'CONNECT SQL'
+														AND su.PermissionState = 'GRANT'
 				) un
 			FOR XML PATH('User'), ROOT('Permissions')
 				
