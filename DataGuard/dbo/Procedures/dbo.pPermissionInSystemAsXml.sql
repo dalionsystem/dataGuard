@@ -112,7 +112,7 @@ AS
 														AND su.PermissionType  = 'CONNECT SQL'
 														AND su.PermissionState = 'GRANT'
 				) un
-			FOR XML PATH('User'), ROOT('Permissions')
+			FOR XML PATH('Permission'), ROOT('Permissions')
 				
 		)
 
