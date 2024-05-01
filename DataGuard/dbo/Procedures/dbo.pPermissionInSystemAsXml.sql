@@ -109,8 +109,8 @@ AS
 														AND su.PermissionType  = 'CONNECT'
 														AND su.PermissionState = 'GRANT'
 					LEFT JOIN #PermissionInSystem sl ON u2.[LoginName] = sl.[UserName]
-														AND su.PermissionType  = 'CONNECT SQL'
-														AND su.PermissionState = 'GRANT'
+														AND sl.PermissionType  = 'CONNECT SQL'
+														AND sl.PermissionState = 'GRANT'
 				) un
 			FOR XML PATH('Permission'), ROOT('Permissions')
 				
