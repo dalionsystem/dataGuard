@@ -34,7 +34,7 @@ GO
 
 
 
-CREATE TRIGGER [conf].[trg_t_ModyficationMeta]
+CREATE TRIGGER [conf].[trg_tPermission_ModyficationMeta]
 	ON [conf].[tPermission]
 	WITH EXECUTE AS OWNER		
 	AFTER INSERT, UPDATE 
@@ -69,7 +69,7 @@ BEGIN
 		   ,LastModifiedOn	= @Datetime
 	FROM inserted i
 	INNER JOIN [conf].[tPermission] u ON i.PermissionId = u.PermissionId
-	LEFT JOIN deleted d				ON i.PermissionId = d.PermissiondId
+	LEFT JOIN deleted d				ON i.PermissionId = d.PermissionId
 	WHERE d.PermissionId IS NULL
 
 
@@ -80,9 +80,9 @@ BEGIN
 		SELECT LastModifiedBy, LastModifiedOn FROM inserted
 	)
 	AND NOT EXISTS (
-		SELECT UserName, LoginId, DefaultSchema, IsActive FROM deleted
+		SELECT EnvironmentId, DatabaseId, UserId, ObjectType, SchemaName, ObjectName FROM deleted
 		EXCEPT 
-		SELECT UserName, LoginId, DefaultSchema, IsActive FROM inserted
+		SELECT EnvironmentId, DatabaseId, UserId, ObjectType, SchemaName, ObjectName FROM inserted
 	)
 	BEGIN 
 		UPDATE u 
