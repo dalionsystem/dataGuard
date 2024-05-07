@@ -7,4 +7,11 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[pGetListOfDatabasePermissions]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="33aab0bf-b29e-4b74-8180-3fa24b71bfd4" ChangeDateTime="05/07/2024 09:27:48">
+    <Property Name="ElementName" Value="[dbo].[pPermissionInSystem]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[pPermissionInInstance]" />
+  </Operation>
 </Operations>

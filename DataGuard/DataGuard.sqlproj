@@ -90,7 +90,7 @@
     <Build Include="dbo\Procedures\dbo.pGetListOfDatabaseUsers.sql" />
     <Build Include="dbo\Procedures\dbo.pGetListOfDatabaseObject.sql" />
     <Build Include="dbo\Procedures\dbo.pIsDatabaseExists.sql" />
-    <Build Include="dbo\Procedures\dbo.pPermissionInSystem.sql" />
+    <Build Include="dbo\Procedures\dbo.pPermissionInInstance.sql" />
     <Build Include="dbo\Procedures\dbo.pGetListOfInstancePermissions.sql" />
     <Build Include="dbo\Procedures\dbo.pGetListOfDatabaseRoles.sql" />
     <Build Include="dbo\Procedures\dbo.pGetListOfInstanceRoles.sql" />

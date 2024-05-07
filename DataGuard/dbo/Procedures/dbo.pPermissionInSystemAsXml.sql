@@ -46,7 +46,7 @@ AS
 
 
 	--	INSERT INTO @PermissionInSystem ([DatabaseName], [Type], [UserName], [RoleName], [ClassDesc], [PermissionType], [PermissionState], [SchemaName], [SqlObjectType], [ObjectName], [ObjectType])
-		EXEC [dbo].[pPermissionInSystem] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
+		EXEC [dbo].[pPermissionInInstance] @DatabaseName=@DatabaseName, @IsDebug= @IsDebug
 
 --		SELECT * FROM #PermissionInSystem
 

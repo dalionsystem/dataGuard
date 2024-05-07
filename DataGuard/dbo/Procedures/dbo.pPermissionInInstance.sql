@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[pPermissionInSystem]
+﻿CREATE PROCEDURE [dbo].[pPermissionInInstance]
 	@DatabaseName	sysname,
 	@IsDebug		BIT		= 0
 AS
