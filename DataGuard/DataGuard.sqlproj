@@ -99,6 +99,7 @@
     <Build Include="dbo\Procedures\dbo.pGetListOfInstanceLogins.sql" />
     <Build Include="mon\Tables\mon.tUserState.sql" />
     <Build Include="dbo\Procedures\dbo.pPermissionInSystemAsXml.sql" />
+    <Build Include="dbo\Procedures\dbo.pGetLoginDiff.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[pGetListOfInstanceLogin]
+﻿CREATE PROCEDURE [dbo].[pGetLoginDiff]
 	@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
@@ -16,13 +16,20 @@ AS
 
 
 
-		SELECT  'SERVER'		 AS [ClassDesc]
-				,s.[type]		 AS [Type]
-				,s.[name]		 AS [LoginName]	
-				,~s.is_disabled  AS [IsEnabled]
-				,s.[modify_date] AS [LastModifiedOn]
-		FROM		sys.server_principals (nolock) s
+	CREATE TABLE #InstanceLogin 
+	(
+		[ClassDesc]			VARCHAR(10)
+		,[Type]				CHAR(1)
+		,[LoginName]		VARCHAR(128)
+		,[IsEnabled]		BIT 
+		,[LastModifiedOn]	DATETIME2(3)
+	)
+
+
+	INSERT INTO #InstanceLogin 
+	EXEC [dbo].[pGetListOfInstanceLogins] @IsDebug =@IsDebug
 
 
 
-	EXEC SP_executesql @sql
+
+
