@@ -18,10 +18,10 @@ AS
 
 	CREATE TABLE #InstanceLogin 
 	(
-		[ClassDesc]			VARCHAR(10)
+		 [ClassDesc]		VARCHAR(10)		COLLATE SQL_Latin1_General_CP1_CI_AS  
 		,[Type]				CHAR(1)
-		,[LoginName]		VARCHAR(128)
-		,[IsEnabled]		BIT 
+		,[LoginName]		VARCHAR(128)	COLLATE SQL_Latin1_General_CP1_CI_AS  
+		,[IsActive]			BIT 
 		,[LastModifiedOn]	DATETIME2(3)
 	)
 
@@ -30,6 +30,16 @@ AS
 	EXEC [dbo].[pGetListOfInstanceLogins] @IsDebug =@IsDebug
 
 
+	SELECT DISTINCT 
+		COALESCE(c.LoginName , i.[LoginName] )	AS LoginName
+		,c.IsActive
+		,i.IsActive								AS SysIsActive
+		,i.LastModifiedOn
+		,NULLIF(c.LoginName, i.LoginName)		AS CreatLogin
+		,NULLIF(i.LoginName, c.LoginName)		AS Droplogin
+
+	FROM [conf].[tLogin] c (nolock)
+	FULL OUTER JOIN #InstanceLogin i (nolock) ON c.LoginName = i.LoginName
 
 
 

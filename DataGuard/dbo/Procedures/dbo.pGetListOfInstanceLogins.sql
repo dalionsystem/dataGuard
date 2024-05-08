@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[pGetListOfInstanceLogin]
+﻿CREATE PROCEDURE [dbo].[pGetListOfInstanceLogins]
 	@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
@@ -19,7 +19,7 @@ AS
 		SELECT  'SERVER'		 AS [ClassDesc]
 				,s.[type]		 AS [Type]
 				,s.[name]		 AS [LoginName]	
-				,~s.is_disabled  AS [IsEnabled]
+				,~s.is_disabled  AS [IsActive]
 				,s.[modify_date] AS [LastModifiedOn]
 		FROM		sys.server_principals (nolock) s
 
