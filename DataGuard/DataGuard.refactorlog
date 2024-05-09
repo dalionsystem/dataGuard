@@ -14,4 +14,11 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[pPermissionInInstance]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="67fb5407-781e-439a-a001-4027602d8bf5" ChangeDateTime="05/09/2024 07:19:42">
+    <Property Name="ElementName" Value="[dbo].[pGetListOfInstanceLogins]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[pGetListOfInstancePrincipals]" />
+  </Operation>
 </Operations>

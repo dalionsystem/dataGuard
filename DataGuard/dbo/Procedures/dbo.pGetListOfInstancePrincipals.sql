@@ -1,5 +1,6 @@
-﻿CREATE PROCEDURE [dbo].[pGetListOfInstanceLogins]
-	@IsDebug		BIT		= 0
+﻿CREATE PROCEDURE [dbo].[pGetListOfInstancePrincipals]
+	@Type			CHAR(1) = '%'
+   ,@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
 			,@ErrorMesssage nvarchar(2000) 
@@ -21,7 +22,8 @@ AS
 				,s.[name]		 AS [LoginName]	
 				,~s.is_disabled  AS [IsActive]
 				,s.[modify_date] AS [LastModifiedOn]
-		FROM		sys.server_principals (nolock) s
+		FROM	sys.server_principals (nolock) s
+		WHERE   s.type LIKE @Type
 
 
 

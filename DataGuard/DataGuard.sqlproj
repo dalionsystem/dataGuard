@@ -96,7 +96,7 @@
     <Build Include="dbo\Procedures\dbo.pGetListOfInstanceRoles.sql" />
     <Build Include="dbo\Procedures\dbo.pThrowErrorIfDatabaseNotExists.sql" />
     <Build Include="dbo\Procedures\dbo.pObjectInSystem.sql" />
-    <Build Include="dbo\Procedures\dbo.pGetListOfInstanceLogins.sql" />
+    <Build Include="dbo\Procedures\dbo.pGetListOfInstancePrincipals.sql" />
     <Build Include="mon\Tables\mon.tUserState.sql" />
     <Build Include="dbo\Procedures\dbo.pPermissionInSystemAsXml.sql" />
     <Build Include="dbo\Procedures\dbo.pGetLoginDiff.sql" />

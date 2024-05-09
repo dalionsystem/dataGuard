@@ -27,7 +27,7 @@ AS
 
 
 	INSERT INTO #InstanceLogin 
-	EXEC [dbo].[pGetListOfInstanceLogins] @IsDebug =@IsDebug
+	EXEC [dbo].[pGetListOfInstancePrincipals] @IsDebug =@IsDebug
 
 
 	SELECT DISTINCT 
@@ -40,6 +40,6 @@ AS
 
 	FROM [conf].[tLogin] c (nolock)
 	FULL OUTER JOIN #InstanceLogin i (nolock) ON c.LoginName = i.LoginName
-
+	WHERE i.type IN ('S', 'U')   --C, K, R, S, U
 
 
