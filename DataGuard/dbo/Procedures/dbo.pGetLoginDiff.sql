@@ -40,6 +40,6 @@ AS
 
 	FROM [conf].[tLogin] c (nolock)
 	FULL OUTER JOIN #InstanceLogin i (nolock) ON c.LoginName = i.LoginName
-	WHERE i.type IN ('S', 'U')   --C, K, R, S, U
+	WHERE i.type IN ('S', 'U', 'K')   --C, R, S, U
 
 

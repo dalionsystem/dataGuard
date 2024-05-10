@@ -73,6 +73,8 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\Functions" />
     <Folder Include="dbo\Procedures" />
+    <Folder Include="sec" />
+    <Folder Include="sec\Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\log.sql" />
@@ -100,6 +102,8 @@
     <Build Include="mon\Tables\mon.tUserState.sql" />
     <Build Include="dbo\Procedures\dbo.pPermissionInSystemAsXml.sql" />
     <Build Include="dbo\Procedures\dbo.pGetLoginDiff.sql" />
+    <Build Include="Security\sec.sql" />
+    <Build Include="sec\Procedures\sec.pCreateLogin.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
