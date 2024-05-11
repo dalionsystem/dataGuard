@@ -1,9 +1,10 @@
 ﻿CREATE PROCEDURE [sec].[pCreateLogin]
-	@LoginName		VARCHAR 
+	@LoginName		VARCHAR(128) 
    ,@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
-			,@ErrorMesssage nvarchar(2000) 
+			,@Messsage nvarchar(4000) 
+			,@ErrorMessage nvarchar(2000) 
 			,@ExecQuery nvarchar(4000)
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
@@ -14,3 +15,30 @@ AS
 								@Tab, ',@IsDebug = ', @IsDebug )
 		PRINT @ExecQuery		 
 	END
+
+
+	IF @LoginName LIKE '%\%'
+	BEGIN
+
+		IF SUSER_SID(@LoginName) IS NULL
+		BEGIN
+			
+			SET @ErrorMessage = CONCAT('The LoginName ''', @LoginName ,''' not exists in AD or you don''t have permissions')
+			;THROW 50000, @ErrorMessage, 1 
+		END 
+
+		SET @Messsage = CONCAT('Windows login ', @LoginName, ' will be created')
+		IF @IsDebug=1 PRINT @Messsage
+
+		SET @Sql = CONCAT('CREATE LOGIN ', QUOTENAME(@LoginName), ' FROM WINDOWS')
+
+	END
+	ELSE 
+	BEGIN
+
+		SET @Messsage = CONCAT('SQL login ', @LoginName, ' will be created. You must change password')
+		IF @IsDebug=1 PRINT @Messsage
+
+		SET @Sql = CONCAT('CREATE LOGIN ', QUOTENAME(@LoginName), ' WITH PASSWORD=N''', NEWID() ,''' MUST_CHANE, CHECK_EXPIRATION=ON')
+
+	END 
