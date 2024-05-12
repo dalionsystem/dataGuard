@@ -12,6 +12,7 @@ AS
 	IF @IsDebug = 1 
 	BEGIN
 		SET @ExecQuery = CONCAT( 'EXEC ', QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', QUOTENAME(OBJECT_NAME(@@PROCID)), @CRLF,
+								@Tab, ' @LoginName = ', @LoginName,	@CRLF,
 								@Tab, ',@IsDebug = ', @IsDebug )
 		PRINT @ExecQuery		 
 	END
@@ -21,10 +22,12 @@ AS
 	BEGIN
 
 		IF SUSER_SID(@LoginName) IS NULL
-		BEGIN
-			
+		BEGIN		
+		
 			SET @ErrorMessage = CONCAT('The LoginName ''', @LoginName ,''' not exists in AD or you don''t have permissions')
+
 			;THROW 50000, @ErrorMessage, 1 
+
 		END 
 
 		SET @Messsage = CONCAT('Windows login ', @LoginName, ' will be created')
@@ -39,6 +42,14 @@ AS
 		SET @Messsage = CONCAT('SQL login ', @LoginName, ' will be created. You must change password')
 		IF @IsDebug=1 PRINT @Messsage
 
-		SET @Sql = CONCAT('CREATE LOGIN ', QUOTENAME(@LoginName), ' WITH PASSWORD=N''', NEWID() ,''' MUST_CHANE, CHECK_EXPIRATION=ON')
+		SET @Sql = CONCAT('CREATE LOGIN ', QUOTENAME(@LoginName), ' WITH PASSWORD=N''', NEWID() ,''' MUST_CHANGE, CHECK_EXPIRATION=ON')
 
 	END 
+
+
+	SET @Messsage = CONCAT('Create login ', QUOTENAME(@LoginName))
+
+	EXEC sp_Executesql @sql
+
+	SET @Messsage = CONCAT('Login ', QUOTENAME(@LoginName) , ' was created.')
+
