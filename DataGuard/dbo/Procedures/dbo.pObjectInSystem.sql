@@ -4,7 +4,7 @@
 AS
 
 	DECLARE @Sql nvarchar(3000)
-			,@ErrorMesssage nvarchar(2000) 
+			,@ErrorMessage nvarchar(2000) 
 			,@ExecQuery nvarchar(4000)
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
@@ -64,8 +64,8 @@ AS
 				EXEC [dbo].[pGetListOfDatabaseObject] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
 			END TRY
 			BEGIN CATCH	
-				SET @ErrorMesssage  = CONCAT('Error when get data from dbo.pGetListOfDatabaseObject on DatabaseName ', @DatabaseNameLoop)
-				PRINT @ErrorMesssage 
+				SET @ErrorMessage  = CONCAT('Error when get data from dbo.pGetListOfDatabaseObject on DatabaseName ', @DatabaseNameLoop)
+				PRINT @ErrorMessage 
 			END CATCH
 
 

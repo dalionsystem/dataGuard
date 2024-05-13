@@ -104,6 +104,7 @@
     <Build Include="dbo\Procedures\dbo.pGetLoginDiff.sql" />
     <Build Include="Security\sec.sql" />
     <Build Include="sec\Procedures\sec.pCreateLogin.sql" />
+    <Build Include="conf\Tables\conf.tSettings.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />

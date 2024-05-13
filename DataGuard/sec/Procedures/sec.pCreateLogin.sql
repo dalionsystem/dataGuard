@@ -48,8 +48,14 @@ AS
 
 
 	SET @Messsage = CONCAT('Create login ', QUOTENAME(@LoginName))
+	IF @IsDebug=1 PRINT @Messsage
 
-	EXEC sp_Executesql @sql
+	BEGIN TRAN
+		EXEC sp_Executesql @sql
+	
+	ROLLBACK
+
 
 	SET @Messsage = CONCAT('Login ', QUOTENAME(@LoginName) , ' was created.')
+	IF @IsDebug=1 PRINT @Messsage
 

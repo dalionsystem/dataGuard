@@ -3,7 +3,7 @@
 	@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
-			,@ErrorMesssage nvarchar(2000) 
+			,@ErrorMessage nvarchar(2000) 
 			,@ExecQuery nvarchar(4000)
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)
@@ -21,7 +21,7 @@ AS
 
 	IF DB_ID(@DatabaseName) IS NULL OR HAS_DBACCESS(@DatabaseName) = 0
 	BEGIN
-		SET @ErrorMesssage = CONCAT('The database ',@DatabaseName,' does not exists!')
-		;THROW 50001, @ErrorMesssage ,1;
+		SET @ErrorMessage = CONCAT('The database ',@DatabaseName,' does not exists!')
+		;THROW 50001, @ErrorMessage ,1;
 	END
 

@@ -2,7 +2,7 @@
 	@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
-			,@ErrorMesssage nvarchar(2000) 
+			,@ErrorMessage nvarchar(2000) 
 			,@ExecQuery nvarchar(4000)
 			,@CRLF CHAR(2) = CHAR(13)+CHAR(10)
 			,@Tab nvarchar(10) = CHAR(9)

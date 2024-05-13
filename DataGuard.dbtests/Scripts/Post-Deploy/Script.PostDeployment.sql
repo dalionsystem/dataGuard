@@ -16,6 +16,13 @@ GO
 :r .\conf\SetTableDatabase.sql
 GO
 
+PRINT N'Executing conf\SetTableSettings.sql...';
+GO
+:r .\conf\SetTableSettings.sql
+GO
+
+
+
 PRINT N'Executing tSQLt\tSQLt.Private_InstallationInfo.sql...';
 GO
 :r .\tSQLt\tSQLt.Private_InstallationInfo.sql
