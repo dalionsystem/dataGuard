@@ -21,4 +21,11 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[pGetListOfInstancePrincipals]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="f5a1c8b0-edbc-4fdf-acf5-391e963e7c6a" ChangeDateTime="05/16/2024 00:16:37">
+    <Property Name="ElementName" Value="[conf].[tSettings]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[conf]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[tSetting]" />
+  </Operation>
 </Operations>

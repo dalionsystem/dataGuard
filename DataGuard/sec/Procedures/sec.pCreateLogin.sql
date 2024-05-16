@@ -51,7 +51,7 @@ AS
 	IF @IsDebug=1 PRINT @Messsage
 
 	BEGIN TRAN
-		EXEC sp_Executesql @sql
+		EXEC sp_executesql @sql
 	
 	ROLLBACK
 

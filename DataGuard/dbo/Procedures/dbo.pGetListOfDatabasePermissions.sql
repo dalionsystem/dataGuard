@@ -41,7 +41,7 @@ AS
 	PRINT @sql
 
 
-	EXEC SP_executesql @sql
+	EXEC sp_executesql @sql
 
 
 

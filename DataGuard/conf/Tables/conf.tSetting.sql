@@ -1,20 +1,24 @@
-﻿CREATE TABLE [conf].[tSettings]
+﻿CREATE TABLE [conf].[tSetting]
 (
 	 [SettingId]				INT					IDENTITY (1, 1)														NOT NULL,
 	 [SettingName]				VARCHAR(50)																				NOT NULL,
 	 [Value]					VARCHAR(50)																				NOT NULL,
-	 [CreatedBy]				NVARCHAR (128)		CONSTRAINT [conf_dfSettings_CreatedBy]		DEFAULT (SYSTEM_USER)	NOT NULL,
-	 [CreatedOn]			    DATETIME2(3)		CONSTRAINT [conf_dfSettings_CreatedOn]		DEFAULT (GETDATE())		NOT NULL,
-	 [LastModifiedBy]			NVARCHAR (128)		CONSTRAINT [conf_dfSettings_LastModifiedBy]	DEFAULT (SYSTEM_USER)	NOT NULL,
-	 [LastModifiedOn]			DATETIME2(3)		CONSTRAINT [conf_dfSettings_LastModifiedOn]	DEFAULT (GETDATE())		NOT NULL,
-													CONSTRAINT [conf_pkSettings]				PRIMARY KEY CLUSTERED ([SettingId] ASC),
+	 [CreatedBy]				NVARCHAR (128)		CONSTRAINT [conf_dfSetting_CreatedBy]		DEFAULT (SYSTEM_USER)	NOT NULL,
+	 [CreatedOn]			    DATETIME2(3)		CONSTRAINT [conf_dfSetting_CreatedOn]		DEFAULT (GETDATE())		NOT NULL,
+	 [LastModifiedBy]			NVARCHAR (128)		CONSTRAINT [conf_dfSetting_LastModifiedBy]	DEFAULT (SYSTEM_USER)	NOT NULL,
+	 [LastModifiedOn]			DATETIME2(3)		CONSTRAINT [conf_dfSetting_LastModifiedOn]	DEFAULT (GETDATE())		NOT NULL,
+													CONSTRAINT [conf_pkSetting]					PRIMARY KEY NONCLUSTERED ([SettingName] ASC),
 )
 
+GO
+
+CREATE CLUSTERED INDEX [uix_conf_Setting_SettingId] ON [conf].[tSetting]([SettingId])
+
+GO
 
 
-
-CREATE TRIGGER [conf].[trg_tSettings_ModyficationMeta]
-	ON [conf].[tSettings]
+CREATE TRIGGER [conf].[trg_tSetting_ModyficationMeta]
+	ON [conf].[tSetting]
 	WITH EXECUTE AS OWNER		
 	AFTER INSERT, UPDATE 
 AS
@@ -47,9 +51,9 @@ BEGIN
 		   ,LastModifiedBy	= @SuserSname
 		   ,LastModifiedOn	= @Datetime
 	FROM inserted i
-	INNER JOIN [conf].[tSettings] u ON i.UserId = u.UserId
-	LEFT JOIN deleted d				ON i.UserId = d.UserId
-	WHERE d.UserId IS NULL
+	INNER JOIN [conf].[tSetting] u ON i.SettingId = u.SettingId
+	LEFT JOIN deleted d				ON i.SettingId = d.SettingId
+	WHERE d.SettingId IS NULL
 
 
 
@@ -59,23 +63,23 @@ BEGIN
 		SELECT LastModifiedBy, LastModifiedOn FROM inserted
 	)
 	AND NOT EXISTS (
-		SELECT UserName, LoginId, DefaultSchema, IsActive FROM deleted
+		SELECT SettingName, Value FROM deleted
 		EXCEPT 
-		SELECT UserName, LoginId, DefaultSchema, IsActive FROM inserted
+		SELECT SettingName, Value FROM inserted
 	)
 	BEGIN 
 		UPDATE u 
 			SET LastModifiedBy	= @SuserSname
 		FROM inserted i
-		INNER JOIN [conf].[tSettings] u ON i.UserId = u.UserId
-		LEFT JOIN deleted d				ON i.UserId = d.UserId
+		INNER JOIN [conf].[tSetting] u	ON i.SettingId = u.SettingId
+		LEFT JOIN deleted d				ON i.SettingId = d.SettingId
 		WHERE	i.LastModifiedBy	<> @SuserSname
 
 		UPDATE u 
 			SET LastModifiedOn	= d.LastModifiedOn
 		FROM inserted i
-		INNER JOIN [conf].[tSettings] u ON i.UserId = u.UserId
-		LEFT JOIN deleted d				ON i.UserId = d.UserId
+		INNER JOIN [conf].[tSetting] u ON i.SettingId = u.SettingId
+		LEFT JOIN deleted d			   ON i.SettingId = d.SettingId
 		WHERE	i.LastModifiedBy	= @SuserSname
 			AND i.LastModifiedOn	<> @Datetime
 	END
@@ -91,8 +95,8 @@ BEGIN
 		SET LastModifiedBy	= @SuserSname
 		   ,LastModifiedOn	= @Datetime
 	FROM inserted i
-	INNER JOIN [conf].[tSettings] u ON i.UserId = u.UserId
-	LEFT JOIN deleted d				ON i.UserId = d.UserId
+	INNER JOIN [conf].[tSetting] u ON i.SettingId = u.SettingId
+	LEFT JOIN deleted d				ON i.SettingId = d.SettingId
 	WHERE	i.LastModifiedBy		<> @SuserSname
 		OR  i.LastModifiedOn		<> @Datetime
 	--	OR  i.[LoginId]				<> d.[LoginId]

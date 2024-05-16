@@ -14,3 +14,10 @@ PRINT N'Executing def\SetTypeLogin.sql...';
 GO
 :r .\def\SetTypeLogin.sql
 GO
+
+
+PRINT N'Executing conf\SetTableSetting.sql...';
+GO
+:r .\conf\SetInitialSetting.sql
+GO
+

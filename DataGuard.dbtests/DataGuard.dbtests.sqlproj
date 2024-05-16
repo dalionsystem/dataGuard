@@ -115,6 +115,5 @@
     <Build Include="Test\Procedures\test conf.tDatabase if record change update LastModifiedOn.sql" />
     <Build Include="Test\Procedures\test conf.tDatabase try change CreatedOn.sql" />
     <Build Include="Test\Procedures\test conf.tDatabase try change CreatedBy.sql" />
-    <None Include="Scripts\Post-Deploy\conf\SetTableSettings.sql" />
   </ItemGroup>
 </Project>

@@ -75,6 +75,7 @@
     <Folder Include="dbo\Procedures" />
     <Folder Include="sec" />
     <Folder Include="sec\Procedures" />
+    <Folder Include="Scripts\Post-Deploy\conf" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Security\log.sql" />
@@ -104,7 +105,8 @@
     <Build Include="dbo\Procedures\dbo.pGetLoginDiff.sql" />
     <Build Include="Security\sec.sql" />
     <Build Include="sec\Procedures\sec.pCreateLogin.sql" />
-    <Build Include="conf\Tables\conf.tSettings.sql" />
+    <Build Include="conf\Tables\conf.tSetting.sql" />
+    <None Include="Scripts\Post-Deploy\conf\SetInitialSetting.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />

@@ -33,7 +33,7 @@ AS
 	SET @sql = CONCAT('SELECT @Result = 1 FROM ',QUOTENAME(@DatabaseName),'.[sys].[schemas] (nolock) where [name] = @SchemaName')
 	PRINT @sql
 
-	EXEC SP_executesql @sql, N'@Result bit OUTPUT, @SchemaName sysname', @Result=@Result OUTPUT, @SchemaName =@SchemaName
+	EXEC sp_executesql @sql, N'@Result bit OUTPUT, @SchemaName sysname', @Result=@Result OUTPUT, @SchemaName =@SchemaName
 
 	PRINT @Result
 

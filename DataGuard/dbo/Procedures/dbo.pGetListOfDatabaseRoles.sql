@@ -32,7 +32,7 @@ AS
 	IF @IsDebug = 1 PRINT @sql
 
 
-	EXEC SP_executesql @sql
+	EXEC sp_executesql @sql
 
 
 

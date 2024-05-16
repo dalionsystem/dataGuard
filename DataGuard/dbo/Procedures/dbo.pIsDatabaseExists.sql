@@ -29,7 +29,7 @@ AS
 	SET @sql = 'SELECT @Result = 1 FROM [sys].[databases] (nolock) where [name] = @DatabaseName'
 	IF @IsDebug = 1 PRINT @sql
 
-	EXEC SP_executesql @sql, N'@Result bit OUTPUT, @DatabaseName sysname', @Result=@Result OUTPUT, @DatabaseName =@DatabaseName
+	EXEC sp_executesql @sql, N'@Result bit OUTPUT, @DatabaseName sysname', @Result=@Result OUTPUT, @DatabaseName =@DatabaseName
 
 	IF @IsDebug = 1 PRINT @Result
 

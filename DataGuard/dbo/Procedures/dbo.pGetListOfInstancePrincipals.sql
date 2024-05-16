@@ -27,4 +27,4 @@ AS
 
 
 
-	EXEC SP_executesql @sql
+	EXEC sp_executesql @sql
