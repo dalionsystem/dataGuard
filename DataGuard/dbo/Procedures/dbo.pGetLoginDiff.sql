@@ -31,15 +31,15 @@ AS
 
 
 	SELECT DISTINCT 
-		COALESCE(c.LoginName , i.[LoginName] )	AS LoginName
+		COALESCE(c.LoginName , i.[LoginName] )				AS LoginName
 		,c.IsActive
-		,i.IsActive								AS SysIsActive
-		,i.LastModifiedOn
-		,NULLIF(c.LoginName, i.LoginName)		AS CreatLogin
-		,NULLIF(i.LoginName, c.LoginName)		AS Droplogin
+		,i.IsActive											AS SysIsActive
+		,COALESCE(i.[LastModifiedOn] ,c.[LastModifiedOn] )	AS LastModifiedOn
+		,NULLIF(c.LoginName, i.LoginName)					AS CreatLogin
+		,NULLIF(i.LoginName, c.LoginName)					AS Droplogin
 
 	FROM [conf].[tLogin] c (nolock)
 	FULL OUTER JOIN #InstanceLogin i (nolock) ON c.LoginName = i.LoginName
-	WHERE i.type IN ('S', 'U', 'K')   --C, R, S, U
-
+	WHERE i.[Type]			IN ('S', 'U', 'K')   --C, R, S, U
+	   OR c.[TypeLoginId]	IN ('S', 'U', 'K') 
 
