@@ -37,6 +37,10 @@ AS
 		,COALESCE(i.[LastModifiedOn] ,c.[LastModifiedOn] )	AS LastModifiedOn
 		,NULLIF(c.LoginName, i.LoginName)					AS CreatLogin
 		,NULLIF(i.LoginName, c.LoginName)					AS Droplogin
+		,CASE 
+			WHEN NULLIF(c.LoginName, i.LoginName) IS NULL AND NULLIF(i.LoginName, c.LoginName) IS NULL 
+			THEN NULLIF(c.IsActive, i.IsActive)	
+		END 											AS SwitchLogin
 
 	FROM [conf].[tLogin] c (nolock)
 	FULL OUTER JOIN #InstanceLogin i (nolock) ON c.LoginName = i.LoginName
