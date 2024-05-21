@@ -107,6 +107,7 @@
     <Build Include="sec\Procedures\sec.pCreateLogin.sql" />
     <Build Include="conf\Tables\conf.tSetting.sql" />
     <None Include="Scripts\Post-Deploy\conf\SetInitialSetting.sql" />
+    <Build Include="dbo\Procedures\dbo.pGetUserDiff.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="local.publish.xml" />
