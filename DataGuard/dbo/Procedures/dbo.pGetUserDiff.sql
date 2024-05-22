@@ -11,26 +11,28 @@ AS
 	IF @IsDebug = 1 
 	BEGIN
 		SET @ExecQuery = CONCAT( 'EXEC ', QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', QUOTENAME(OBJECT_NAME(@@PROCID)), @CRLF,
+								@Tab, ' @DatabaseName = ', @DatabaseName,	@CRLF,
 								@Tab, ',@IsDebug = ', @IsDebug )
 		PRINT @ExecQuery		 
 	END
 
 
-/*
-	CREATE TABLE #InstanceLogin 
+	
+
+	CREATE TABLE #DatabaseUser
 	(
-		 [ClassDesc]		VARCHAR(10)		COLLATE SQL_Latin1_General_CP1_CI_AS  
-		,[Type]				CHAR(1)
-		,[LoginName]		VARCHAR(128)	COLLATE SQL_Latin1_General_CP1_CI_AS  
-		,[IsActive]			BIT 
-		,[LastModifiedOn]	DATETIME2(3)
+		 [DatabaseName]			SYSNAME 		COLLATE SQL_Latin1_General_CP1_CI_AS  
+		,[UserName]				VARCHAR(128)	COLLATE SQL_Latin1_General_CP1_CI_AS  
+		,[Type]					CHAR(1)
+		,[AuthenticationType]	VARCHAR(20)		COLLATE SQL_Latin1_General_CP1_CI_AS  
+		,[IsEnable]				BIT
 	)
 
 
-	INSERT INTO #InstanceLogin 
-	EXEC [dbo].[pGetListOfInstancePrincipals] @IsDebug =@IsDebug
+	INSERT INTO #DatabaseUser 
+	EXEC [dbo].[pGetListOfDatabaseUsers] @DatabaseName =@DatabaseName, @IsDebug =@IsDebug
 
-
+/*
 	SELECT DISTINCT 
 		COALESCE(c.LoginName , i.[LoginName] )				AS LoginName
 		,c.IsActive
