@@ -32,21 +32,24 @@ AS
 	INSERT INTO #DatabaseUser 
 	EXEC [dbo].[pGetListOfDatabaseUsers] @DatabaseName =@DatabaseName, @IsDebug =@IsDebug
 
-/*
-	SELECT DISTINCT 
-		COALESCE(c.LoginName , i.[LoginName] )				AS LoginName
-		,c.IsActive
-		,i.IsActive											AS SysIsActive
-		,COALESCE(i.[LastModifiedOn] ,c.[LastModifiedOn] )	AS LastModifiedOn
-		,NULLIF(c.LoginName, i.LoginName)					AS CreatLogin
-		,NULLIF(i.LoginName, c.LoginName)					AS Droplogin
-		,CASE 
-			WHEN NULLIF(c.LoginName, i.LoginName) IS NULL AND NULLIF(i.LoginName, c.LoginName) IS NULL 
-			THEN NULLIF(c.IsActive, i.IsActive)	
-		END 											AS SwitchLogin
 
-	FROM [conf].[tLogin] c (nolock)
-	FULL OUTER JOIN #InstanceLogin i (nolock) ON c.LoginName = i.LoginName
-	WHERE i.[Type]			IN ('S', 'U', 'K')   --C, R, S, U
-	   OR c.[TypeLoginId]	IN ('S', 'U', 'K') 
-*/
+	select * from #DatabaseUser
+
+	SELECT DISTINCT 
+		COALESCE(c.DatabaseName, i.[DatabaseName] )			AS DatabaseName
+		,COALESCE(c.UserName, i.[UserName] )				AS UserName
+		,c.IsEnable
+		,i.IsEnable											AS SysIsEnable
+
+		,NULLIF(c.UserName, i.UserName)					AS CreatUser
+		,NULLIF(i.UserName, c.UserName)					AS DropUser
+		,CASE 
+			WHEN NULLIF(c.UserName, i.UserName) IS NULL AND NULLIF(i.UserName, c.UserName) IS NULL 
+			THEN NULLIF(c.IsEnable, i.IsEnable)	
+		END 											AS SwitchUser
+
+	FROM [conf].[tUser] c (nolock)
+	FULL OUTER JOIN #DatabaseUser  d (nolock) ON c.[DatabaseName] = d.[DatabaseName]  AND c.[UserName] = d.[UserName]
+	--WHERE i.[Type]			IN ('S', 'U', 'K')   --C, R, S, U
+	--   OR c.[TypeLoginId]	IN ('S', 'U', 'K') 
+
