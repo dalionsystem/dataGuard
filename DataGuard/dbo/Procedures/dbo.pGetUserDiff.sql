@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[pGetUserDiff]
+﻿ CREATE PROCEDURE [dbo].[pGetUserDiff]
 	@DatabaseName	sysname,
 	@IsDebug		BIT		= 0
 AS
@@ -49,8 +49,9 @@ AS
 		END 											AS SwitchUser
 
 	FROM [conf].[tUser] c (nolock)
-	INNER JOIN [conf].[tDatabase] cd (nolock) ON c.DatabaseId =cd.DatabaseId
-	FULL OUTER JOIN #DatabaseUser  d (nolock) ON c.[DatabaseName] = d.[DatabaseName]  AND c.[UserName] = d.[UserName]
+	INNER JOIN [conf].[tPermission] p (nolock) ON c.UserId = p.UserId
+	INNER JOIN [conf].[tDatabase] cd (nolock) ON p.DatabaseId =cd.DatabaseId 
+	FULL OUTER JOIN #DatabaseUser  d (nolock) ON cd.[DatabaseName] = d.[DatabaseName]  AND c.[UserName] = d.[UserName]
 	--WHERE i.[Type]			IN ('S', 'U', 'K')   --C, R, S, U
 	--   OR c.[TypeLoginId]	IN ('S', 'U', 'K') 
 
