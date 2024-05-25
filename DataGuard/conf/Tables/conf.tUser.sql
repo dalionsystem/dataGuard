@@ -2,7 +2,7 @@
 (
 	[UserId]			 INT				IDENTITY (1, 1)													NOT NULL,
 	[UserName]			 NVARCHAR(256)																		NOT	NULL,
---	[DatabaseId]		 INT																					NULL,
+	[DatabaseId]		 INT																					NULL,
 	[LoginId]			 INT																					NULL,
 	[DefaultSchema]		 NVARCHAR(128)																			NULL,
 	[IsActive]			 BIT														DEFAULT(1)				NOT NULL,

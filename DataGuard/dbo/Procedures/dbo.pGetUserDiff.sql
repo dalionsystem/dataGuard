@@ -36,19 +36,20 @@ AS
 	select * from #DatabaseUser
 
 	SELECT DISTINCT 
-		COALESCE(c.DatabaseName, i.[DatabaseName] )			AS DatabaseName
-		,COALESCE(c.UserName, i.[UserName] )				AS UserName
+		 COALESCE(cd.DatabaseName, d.[DatabaseName] )		AS DatabaseName
+		,COALESCE(cd.UserName, d.[UserName] )				AS UserName
 		,c.IsEnable
-		,i.IsEnable											AS SysIsEnable
+		,d.IsEnable											AS SysIsEnable
 
-		,NULLIF(c.UserName, i.UserName)					AS CreatUser
-		,NULLIF(i.UserName, c.UserName)					AS DropUser
+		,NULLIF(cd.UserName, d.UserName)					AS CreatUser
+		,NULLIF(d.UserName, cd.UserName)					AS DropUser
 		,CASE 
-			WHEN NULLIF(c.UserName, i.UserName) IS NULL AND NULLIF(i.UserName, c.UserName) IS NULL 
-			THEN NULLIF(c.IsEnable, i.IsEnable)	
+			WHEN NULLIF(cd.UserName, d.UserName) IS NULL AND NULLIF(d.UserName, cd.UserName) IS NULL 
+			THEN NULLIF(c.IsEnable, d.IsEnable)	
 		END 											AS SwitchUser
 
 	FROM [conf].[tUser] c (nolock)
+	INNER JOIN [conf].[tDatabase] cd (nolock) ON c.DatabaseId =cd.DatabaseId
 	FULL OUTER JOIN #DatabaseUser  d (nolock) ON c.[DatabaseName] = d.[DatabaseName]  AND c.[UserName] = d.[UserName]
 	--WHERE i.[Type]			IN ('S', 'U', 'K')   --C, R, S, U
 	--   OR c.[TypeLoginId]	IN ('S', 'U', 'K') 
