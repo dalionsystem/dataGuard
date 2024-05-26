@@ -33,19 +33,19 @@ AS
 	EXEC [dbo].[pGetListOfDatabaseUsers] @DatabaseName =@DatabaseName, @IsDebug =@IsDebug
 
 
-	select * from #DatabaseUser
+--	select * from #DatabaseUser
 
 	SELECT DISTINCT 
 		 COALESCE(cd.DatabaseName, d.[DatabaseName] )		AS DatabaseName
-		,COALESCE(cd.UserName, d.[UserName] )				AS UserName
-		,c.IsEnable
+		,COALESCE(c.UserName, d.[UserName] )				AS UserName
+		,c.IsActive											AS IsEnable
 		,d.IsEnable											AS SysIsEnable
 
-		,NULLIF(cd.UserName, d.UserName)					AS CreatUser
-		,NULLIF(d.UserName, cd.UserName)					AS DropUser
+		,NULLIF(c.UserName, d.UserName)					AS CreatUser
+		,NULLIF(d.UserName, c.UserName)					AS DropUser
 		,CASE 
-			WHEN NULLIF(cd.UserName, d.UserName) IS NULL AND NULLIF(d.UserName, cd.UserName) IS NULL 
-			THEN NULLIF(c.IsEnable, d.IsEnable)	
+			WHEN NULLIF(c.UserName, d.UserName) IS NULL AND NULLIF(d.UserName, c.UserName) IS NULL 
+			THEN NULLIF(c.IsActive, d.IsEnable)	
 		END 											AS SwitchUser
 
 	FROM [conf].[tUser] c (nolock)
