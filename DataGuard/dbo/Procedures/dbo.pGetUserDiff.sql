@@ -29,8 +29,45 @@ AS
 	)
 
 
-	INSERT INTO #DatabaseUser 
-	EXEC [dbo].[pGetListOfDatabaseUsers] @DatabaseName =@DatabaseName, @IsDebug =@IsDebug
+	IF @DatabaseName <> '%'
+	BEGIN
+		INSERT INTO #DatabaseUser 
+		EXEC [dbo].[pGetListOfDatabaseUsers] @DatabaseName =@DatabaseName, @IsDebug =@IsDebug
+	END 
+
+
+	IF @DatabaseName = '%'
+	BEGIN
+		
+		DECLARE @DatabaseNameLoop sysname
+
+		DECLARE databaseNameCursor CURSOR READ_ONLY FOR
+			SELECT DatabaseName 
+			FROM [conf].[tDatabase] (nolock) 
+			WHERE IsPermissionActive = 1 
+				AND DatabaseName IS NOT NULL
+		
+		OPEN databaseNameCursor
+		FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop
+
+		WHILE @@FETCH_STATUS =0 
+		BEGIN
+
+			BEGIN TRY
+				INSERT INTO #DatabaseUser 
+				EXEC [dbo].[pGetListOfDatabaseUsers] @DatabaseName=@DatabaseNameLoop, @IsDebug= @IsDebug
+			END TRY
+			BEGIN CATCH	
+				SET @ErrorMessage  = CONCAT('Error when get users from dbo.pGetListOfDatabaseUsers on DatabaseName ', @DatabaseNameLoop)
+				PRINT @ErrorMessage 
+			END CATCH
+
+			FETCH NEXT FROM  databaseNameCursor INTO @DatabaseNameLoop
+		END
+
+		CLOSE databaseNameCursor 
+		DEALLOCATE databaseNameCursor 
+	END
 
 
 --	select * from #DatabaseUser
@@ -52,6 +89,5 @@ AS
 	INNER JOIN [conf].[tPermission] p (nolock) ON c.UserId = p.UserId
 	INNER JOIN [conf].[tDatabase] cd (nolock) ON p.DatabaseId =cd.DatabaseId 
 	FULL OUTER JOIN #DatabaseUser  d (nolock) ON cd.[DatabaseName] = d.[DatabaseName]  AND c.[UserName] = d.[UserName]
-	--WHERE i.[Type]			IN ('S', 'U', 'K')   --C, R, S, U
-	--   OR c.[TypeLoginId]	IN ('S', 'U', 'K') 
+
 
