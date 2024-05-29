@@ -77,13 +77,12 @@ AS
 		,COALESCE(c.UserName, d.[UserName] )				AS UserName
 		,c.IsActive											AS IsEnable
 		,d.IsEnable											AS SysIsEnable
-
-		,NULLIF(c.UserName, d.UserName)					AS CreatUser
-		,NULLIF(d.UserName, c.UserName)					AS DropUser
+		,NULLIF(c.UserName, d.UserName)						AS CreatUser
+		,NULLIF(d.UserName, c.UserName)						AS DropUser
 		,CASE 
 			WHEN NULLIF(c.UserName, d.UserName) IS NULL AND NULLIF(d.UserName, c.UserName) IS NULL 
 			THEN NULLIF(c.IsActive, d.IsEnable)	
-		END 											AS SwitchUser
+		END 												AS SwitchUser
 
 	FROM [conf].[tUser] c (nolock)
 	INNER JOIN [conf].[tPermission] p (nolock) ON c.UserId = p.UserId
