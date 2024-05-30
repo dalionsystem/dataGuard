@@ -1,5 +1,7 @@
 ﻿CREATE PROCEDURE [sec].[pCreateUser]
-	@UserName		VARCHAR(128) 
+	@DatabaseName	sysname
+   ,@UserName		VARCHAR(128) 
+   ,@LoginName 		VARCHAR(128) 
    ,@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
@@ -12,7 +14,9 @@ AS
 	IF @IsDebug = 1 
 	BEGIN
 		SET @ExecQuery = CONCAT( 'EXEC ', QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)), '.', QUOTENAME(OBJECT_NAME(@@PROCID)), @CRLF,
+		 						@Tab, ' @DatabaseName = ', @DatabaseName,	@CRLF,
 								@Tab, ' @UserName = ', @UserName,	@CRLF,
+								@Tab, ' @LoginName = ', @LoginName,	@CRLF,
 								@Tab, ',@IsDebug = ', @IsDebug )
 		PRINT @ExecQuery		 
 	END
@@ -20,10 +24,11 @@ AS
 
 
 
-		SET @Messsage = CONCAT('SQL User ', @UserName, ' will be created. You must change password')
+		SET @Messsage = CONCAT('On Database ', @DatabaseName, ' User ', @UserName, ' will be created for login ', @LoginName)
 		IF @IsDebug=1 PRINT @Messsage
 
-		SET @Sql = CONCAT('CREATE User ', QUOTENAME(@UserName), ' WITH PASSWORD=N''', NEWID() ,''' MUST_CHANGE, CHECK_EXPIRATION=ON')
+		SET @Sql = CONCAT('USE ', QUOTENAME(@DatabaseName), @CRLF,
+				' CREATE USER ', QUOTENAME(@UserName), ' FOR LOGIN ' , QUOTENAME(@UserName))
 
 
 
