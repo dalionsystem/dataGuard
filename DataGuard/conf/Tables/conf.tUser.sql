@@ -18,8 +18,8 @@
 GO 
 
 
-CREATE UNIQUE NONCLUSTERED INDEX [uxUser_UserName]
-	ON [conf].[tUser]([UserName] ASC);
+CREATE UNIQUE NONCLUSTERED INDEX [uxUser_UserName_LoginId]
+	ON [conf].[tUser]([UserName] ASC, [LoginId]);
 GO
 
 

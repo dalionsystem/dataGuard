@@ -2,7 +2,7 @@
 (
 	[PermissionId]			INT					IDENTITY (1, 1)		NOT NULL,
 	[EnvironmentId]			TINYINT									NOT NULL,					--TODO
-	[DatabaseId]			INT										NOT NULL,
+--	[DatabaseId]			INT										NOT NULL,
 	[UserId]				INT										NOT NULL,
 	[ObjectType]			VARCHAR(128)		DEFAULT ('%')		NOT NULL,
 	[SchemaName]			SYSNAME				DEFAULT ('%')		NOT NULL,
@@ -80,9 +80,11 @@ BEGIN
 		SELECT LastModifiedBy, LastModifiedOn FROM inserted
 	)
 	AND NOT EXISTS (
-		SELECT EnvironmentId, DatabaseId, UserId, ObjectType, SchemaName, ObjectName FROM deleted
+		SELECT EnvironmentId, --DatabaseId, 
+				UserId, ObjectType, SchemaName, ObjectName FROM deleted
 		EXCEPT 
-		SELECT EnvironmentId, DatabaseId, UserId, ObjectType, SchemaName, ObjectName FROM inserted
+		SELECT EnvironmentId, --DatabaseId, 
+				UserId, ObjectType, SchemaName, ObjectName FROM inserted
 	)
 	BEGIN 
 		UPDATE u 
