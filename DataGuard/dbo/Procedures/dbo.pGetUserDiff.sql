@@ -86,7 +86,7 @@ AS
 
 	FROM [conf].[tUser] c (nolock)
 	INNER JOIN [conf].[tPermission] p (nolock) ON c.UserId = p.UserId
-	INNER JOIN [conf].[tDatabase] cd (nolock) ON p.DatabaseId =cd.DatabaseId 
+	INNER JOIN [conf].[tDatabase] cd (nolock) ON c.DatabaseId =cd.DatabaseId 
 	FULL OUTER JOIN #DatabaseUser  d (nolock) ON cd.[DatabaseName] = d.[DatabaseName]  AND c.[UserName] = d.[UserName]
 
 
