@@ -28,9 +28,9 @@ AS
 		
 		FROM		', QUOTENAME(@DatabaseName),'.sys.database_principals (nolock) c
 		LEFT JOIN	', QUOTENAME(@DatabaseName),'.sys.database_permissions (nolock) m ON m.[grantee_principal_id] = c.[principal_id] AND m.[permission_name] = N''CONNECT''
-		WHERE c.type IN (''S'',''G'',''U'')			AND 
-		--	c.sid IS NOT NULL
-		--    AND c.name <> N''guest''
+		WHERE c.type IN (''S'',''G'',''U'')		
+		--	AND c.sid IS NOT NULL
+		--  AND c.name <> N''guest''
 		'
 	)
 	PRINT @sql
