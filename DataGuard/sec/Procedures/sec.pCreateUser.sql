@@ -2,6 +2,7 @@
 	@DatabaseName	sysname
    ,@UserName		VARCHAR(128) 
    ,@LoginName 		VARCHAR(128) 
+   ,@DefaultSchema  VARCHAR(128) --= 'dbo'
    ,@IsDebug		BIT		= 0
 AS
 	DECLARE @Sql nvarchar(3000)
@@ -17,6 +18,7 @@ AS
 		 						@Tab, ' @DatabaseName = ', @DatabaseName,	@CRLF,
 								@Tab, ' @UserName = ', @UserName,	@CRLF,
 								@Tab, ' @LoginName = ', @LoginName,	@CRLF,
+								@Tab, ' @DefaultSchema  = ', @DefaultSchema ,	@CRLF,
 								@Tab, ',@IsDebug = ', @IsDebug )
 		PRINT @ExecQuery		 
 	END
@@ -28,7 +30,7 @@ AS
 		IF @IsDebug=1 PRINT @Messsage
 
 		SET @Sql = CONCAT('USE ', QUOTENAME(@DatabaseName), @CRLF,
-				' CREATE USER ', QUOTENAME(@UserName), ' FOR LOGIN ' , QUOTENAME(@UserName))
+				' CREATE USER ', QUOTENAME(@UserName), ' FOR LOGIN ' , QUOTENAME(@UserName) , ' WITH DEFAULT_SCHEMA = ''' + @DefaultSchema + '''' )
 
 
 
