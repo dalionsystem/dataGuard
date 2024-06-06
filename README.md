@@ -63,7 +63,7 @@ Quickest way to execute all test is
 
 #### Example result
 
-
+````
 +----------------------+
 |Test Execution Summary|
 +----------------------+
@@ -78,4 +78,4 @@ Quickest way to execute all test is
 ----------------------------------------------------------------------------------------
 Test Case Summary: 5 test case(s) executed, 5 succeeded, 0 skipped, 0 failed, 0 errored.
 ----------------------------------------------------------------------------------------
-
+````
