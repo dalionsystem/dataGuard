@@ -17,7 +17,7 @@ db permission management & audit system
 <div align="center">
 
 
-  <img src="data-guard-logo.jpgf" alt="drawing" class="logo"/>
+  <img src="data-guard-logo.jpg" alt="drawing" class="logo"/>
 
 
 </div>
