@@ -14,6 +14,14 @@ db permission management & audit system
 
 ## About DataGuard 
 
+<div align="center">
+
+
+  <img src="data-guard-logo.jpgf" alt="drawing" class="logo"/>
+
+
+</div>
+
 Do you know what permissions are currently set on your databases?
 Do you know when which permission was granted?
 Has someone accidentally granted too many permissions?
@@ -45,9 +53,29 @@ Facilitates the transfer of permissions between different environments (DEV, TES
 - Visual Studion (unfortunately scripts for running without VS are not yet prepared)
 
 ### Deployment
--- Deploy Project DataGuard (local.publish.xml)
--- Deploy Project DataGuard.dbtest (local.publish.xml)
+- Deploy Project DataGuard (local.publish.xml)
+- Deploy Project DataGuard.dbtest (local.publish.xml)
 
 ### Test 
 Unit test are writtent in T-SQLt framework (https://tsqlt.org/)  
 Quickest way to execute all test is  
+>	__EXEC	[tSQLt].[RunAll]__
+
+#### Example result
+
+
++----------------------+
+|Test Execution Summary|
++----------------------+
+ 
+|No|Test Case Name                                                     |Dur(ms)|Result |
++--+-------------------------------------------------------------------+-------+-------+
+|1 |[test].[test conf.tDatabase if record change update LastModifiedOn]|     10|Success|
+|2 |[test].[test conf.tDatabase try change CreatedBy]                  |      8|Success|
+|3 |[test].[test conf.tDatabase try change CreatedOn]                  |      8|Success|
+|4 |[test].[test database DataGuard existing]                          |      8|Success|
+|5 |[test].[test database TestDataTest not existing]                   |      3|Success|
+----------------------------------------------------------------------------------------
+Test Case Summary: 5 test case(s) executed, 5 succeeded, 0 skipped, 0 failed, 0 errored.
+----------------------------------------------------------------------------------------
+
