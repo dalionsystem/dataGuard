@@ -35,7 +35,7 @@ AS
 		,c.IsActive
 		,i.IsActive											AS SysIsActive
 		,COALESCE(i.[LastModifiedOn] ,c.[LastModifiedOn] )	AS LastModifiedOn
-		,NULLIF(c.LoginName, i.LoginName)					AS CreatLogin
+		,NULLIF(c.LoginName, i.LoginName)					AS CreateLogin
 		,NULLIF(i.LoginName, c.LoginName)					AS Droplogin
 		,CASE 
 			WHEN NULLIF(c.LoginName, i.LoginName) IS NULL AND NULLIF(i.LoginName, c.LoginName) IS NULL 

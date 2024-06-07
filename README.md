@@ -48,8 +48,8 @@ Facilitates the transfer of permissions between different environments (DEV, TES
 
 ## How to  deploy/run
 ### Requirements
-- SQL Server 2022
-- DataTools
+- SQL Server 2022 ( https://www.microsoft.com/pl-pl/sql-server/sql-server-downloads    https://info.microsoft.com/ww-landing-sql-server-2022.html?culture=en-us&country=us)
+- DataTools (https://learn.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-ver16)
 - Visual Studion (unfortunately scripts for running without VS are not yet prepared)
 
 ### Deployment
@@ -78,4 +78,18 @@ Quickest way to execute all test is
 ----------------------------------------------------------------------------------------
 Test Case Summary: 5 test case(s) executed, 5 succeeded, 0 skipped, 0 failed, 0 errored.
 ----------------------------------------------------------------------------------------
+````
+
+
+### Execute 
+On current state of project, you can get some middle information 
+
+'```sql
+USE [DataGuard]
+GO
+
+EXEC	[dbo].[pGetLoginDiff]
+EXEC	[dbo].[pGetUserDiff] @DatabaseName = DataGuard
+
+
 ````
