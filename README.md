@@ -84,7 +84,7 @@ Test Case Summary: 5 test case(s) executed, 5 succeeded, 0 skipped, 0 failed, 0 
 ### Execute 
 On current state of project, you can get some middle information 
 
-'```sql
+````sql
 USE [DataGuard]
 GO
 
